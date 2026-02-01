@@ -4,3 +4,6 @@ dist/
 .DS_Store
 coverage/
 .pnp.cjs
+
+# TypeScript incremental build files
+*.tsbuildinfo
