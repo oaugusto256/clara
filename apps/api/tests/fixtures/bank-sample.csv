@@ -1,0 +1,7 @@
+Data,Valor,Identificador,Descrição
+01/01/2026,-140.00,id-mock-6956,Transferência enviada pelo Pix - TEST USER
+02/01/2026,1200,id-mock-1234,"Salário, pagamento mensal"
+03/01/2026,-45,id-mock-2222,Almoço - Restaurante
+04/01/2026,3.50,id-mock-3333,Reembolso - Café
+05/01/2026,"1.234,56",id-mock-4444,Compra internacional
+06/01/2026,ABC,id-mock-5555,Invalid amount row
