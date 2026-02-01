@@ -22,7 +22,11 @@ importers:
 
   apps/web: {}
 
-  packages/rules-engine: {}
+  packages/rules-engine:
+    dependencies:
+      '@clara/schemas':
+        specifier: workspace:*
+        version: link:../schemas
 
   packages/schemas:
     dependencies:
