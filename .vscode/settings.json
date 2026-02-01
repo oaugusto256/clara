@@ -1,0 +1,9 @@
+{
+  // Temporary workspace settings to prevent the Biome language server from crashing repeatedly
+  // These keys cover common Biome extension settings (safe to keep multiple). Remove once root cause is fixed.
+  "biome.languageServer.enabled": false,
+  "biome.server.enabled": false,
+  "biome.enable": false,
+  "biome.enabled": false,
+  "biome.lsp.enabled": false
+}
