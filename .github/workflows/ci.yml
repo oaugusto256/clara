@@ -18,8 +18,8 @@ jobs:
       - name: Install
         run: pnpm install
       - name: Lint (Biome)
-        run: pnpm -w -r run lint
+        run: pnpm -r run lint
       - name: Build
-        run: pnpm -w -r run build
+        run: pnpm -r run build
       - name: Test
-        run: pnpm -w -r run test || true
+        run: pnpm -r run test || true

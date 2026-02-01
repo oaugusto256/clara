@@ -5,10 +5,10 @@
 	"workspaces": ["apps/*", "packages/*"],
 	"scripts": {
 		"bootstrap": "pnpm install",
-		"build": "pnpm -w -r run build",
-		"test": "pnpm -w -r run test",
-		"lint": "pnpm -w -r run lint",
-		"format": "pnpm -w -r run format"
+		"build": "pnpm -r run build",
+		"test": "pnpm -r run test",
+		"lint": "pnpm -r run lint",
+		"format": "pnpm -r run format"
 	},
 	"devDependencies": {
 		"typescript": "^5.5.0",
