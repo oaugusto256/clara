@@ -12,6 +12,6 @@
 	},
 	"devDependencies": {
 		"typescript": "^5.5.0",
-		"biome": "^1.27.0"
+		"biome": "0.3.3"
 	}
 }
