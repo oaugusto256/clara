@@ -59,17 +59,7 @@ export type Category = {
   color?: string;
 };
 
-export const DEFAULT_CATEGORY_KEYS = [
-  'housing',
-  'food',
-  'transport',
-  'health',
-  'education',
-  'leisure',
-  'subscriptions',
-  'savings',
-  'other',
-] as const;
+
 
 export type Budget = {
   id: string;
@@ -113,3 +103,5 @@ export type NormalizedTransactionInput = {
   currency: string;
   date: string; // ISO date
 };
+
+export * from './schemas';
