@@ -161,5 +161,7 @@ This project was built to demonstrate architectural decisions, product thinking,
    ```
 
 Developer tooling notes:
-- Run `pnpm run lint` to lint across the workspace.
-- The repository includes base ESLint and Prettier configs in the repo root.
+- Run `pnpm run lint` to lint across the workspace (uses Biome: `biome check`). ⚙️
+- Use `pnpm run format` to format the workspace (uses Biome: `biome format`). ✨
+- You can run Biome directly: `npx biome check` / `npx biome format`.
+- Note: ESLint and Prettier configs were removed in favor of Biome for a single-tool developer experience.

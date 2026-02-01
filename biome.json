@@ -1,0 +1,21 @@
+{
+	"files": ["**/*.{ts,tsx,js,jsx,json,md}"],
+	"excludeFiles": ["node_modules", "dist"],
+
+	"format": {
+		"enabled": true,
+		"lineWidth": 100,
+		"singleQuote": true,
+		"trailingComma": "all",
+		"tabWidth": 2,
+		"semi": true
+	},
+
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"@typescript-eslint/no-explicit-any": "off"
+		}
+	}
+}

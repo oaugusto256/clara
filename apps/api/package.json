@@ -1,9 +1,11 @@
 {
-  "name": "@clara/api",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "echo \"Start API server\"",
-    "start": "echo \"Run API\""
-  }
+	"name": "@clara/api",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "echo \"Start API server\"",
+		"start": "echo \"Run API\"",
+		"lint": "biome check",
+		"format": "biome format \"**/*.{ts,tsx,js,json,md}\""
+	}
 }

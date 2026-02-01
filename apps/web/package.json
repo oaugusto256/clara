@@ -1,9 +1,11 @@
 {
-  "name": "@clara/web",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "echo \"Start web dev server\"",
-    "build": "echo \"Build web app\""
-  }
+	"name": "@clara/web",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "echo \"Start web dev server\"",
+		"build": "echo \"Build web app\"",
+		"lint": "biome check",
+		"format": "biome format \"**/*.{ts,tsx,js,json,md}\""
+	}
 }

@@ -8,14 +8,10 @@
 		"build": "pnpm -w -r run build",
 		"test": "pnpm -w -r run test",
 		"lint": "pnpm -w -r run lint",
-		"format": "prettier --write \"**/*.{ts,tsx,js,json,md}\""
+		"format": "pnpm -w -r run format"
 	},
 	"devDependencies": {
 		"typescript": "^5.5.0",
-		"eslint": "^8.50.0",
-		"@typescript-eslint/parser": "^6.9.0",
-		"@typescript-eslint/eslint-plugin": "^6.9.0",
-		"prettier": "^3.0.0",
-		"eslint-config-prettier": "^9.0.0"
+		"biome": "^1.27.0"
 	}
 }
