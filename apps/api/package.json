@@ -6,6 +6,12 @@
 		"dev": "echo \"Start API server\"",
 		"start": "echo \"Run API\"",
 		"lint": "biome check",
-		"format": "biome format \"**/*.{ts,tsx,js,json,md}\""
+		"format": "biome format \"**/*.{ts,tsx,js,json,md}\"",
+		"test": "vitest",
+		"test:ci": "pnpm -w -F @clara/schemas build && vitest run"
+	},
+	"dependencies": {
+		"@clara/schemas": "workspace:*",
+		"uuid": "^9.0.0"
 	}
 }
