@@ -63,6 +63,8 @@ Each backlog item includes:
 **Dependencies**
 - None
 
+**Status**: **Done** — basic workspace, Biome, TypeScript configs, and CI updated (2026-02-01)
+
 ---
 
 ### F-02 — Domain Schemas
