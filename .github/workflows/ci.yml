@@ -22,4 +22,4 @@ jobs:
       - name: Build
         run: pnpm -r run build
       - name: Test
-        run: pnpm -r run test || true
+        run: pnpm -r run test:ci
