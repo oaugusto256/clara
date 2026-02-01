@@ -130,3 +130,36 @@ Rules are:
 ## 📌 Note
 
 This project was built to demonstrate architectural decisions, product thinking, and technical maturity in a realistic personal finance (FinTech) context.
+
+---
+
+## Getting started ⚡️
+
+1. Install pnpm (if you don't have it):
+
+   ```bash
+   npm i -g pnpm
+   ```
+
+2. Bootstrap the workspace:
+
+   ```bash
+   pnpm install
+   pnpm run bootstrap
+   ```
+
+3. Build all packages:
+
+   ```bash
+   pnpm run build
+   ```
+
+4. Format codebase:
+
+   ```bash
+   pnpm run format
+   ```
+
+Developer tooling notes:
+- Run `pnpm run lint` to lint across the workspace.
+- The repository includes base ESLint and Prettier configs in the repo root.

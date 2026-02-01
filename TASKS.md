@@ -69,8 +69,8 @@ Performance, UX improvements, documentation, deploy.
 - [x] Create `ENGINEERING_GUIDELINES.md`
 - [x] Create `DOMAIN_SCHEMAS.md`
 - [x] Define Open Finance positioning (Open Finance–ready)
-- [ ] Create `TASKS.md`
-- [ ] Define folder structure (monorepo)
+- [x] Create `TASKS.md`
+- [x] Define folder structure (monorepo)
 - [ ] Setup shared schemas package
 
 ---
@@ -171,6 +171,142 @@ When generating or modifying code:
 3. Do not skip foundational steps
 4. Prefer minimal implementations first
 5. Never introduce features not listed here
+
+## 7. Technical Stack & Responsibilities
+
+This section defines the **official technical stack** used in the Clara project and the **role of each technology**.
+
+The goal is to:
+- avoid ambiguity
+- guide implementation decisions
+- support AI-assisted development
+- make the project readable for recruiters and collaborators
+
+---
+
+### 7.1 Frontend Stack (Primary Focus)
+
+The frontend is the **primary focus** of this project.
+
+#### Technologies
+- React
+- TypeScript
+- Modern React patterns (hooks, composition)
+- Charting library (to be defined)
+- Data-fetching library (to be defined)
+
+#### Responsibilities
+- Owns all user-facing experiences
+- Renders financial data in a clear, accessible way
+- Handles complex UI states:
+  - loading
+  - empty
+  - error
+  - success
+- Consumes backend data without re-implementing business logic
+- Never performs financial calculations outside the rules engine
+
+#### Principles
+- Feature-based folder structure
+- Schema-driven forms and UI
+- Derived state over stored state
+- Performance-first mindset for large datasets
+
+---
+
+### 7.2 Backend Stack
+
+The backend exists to **serve the frontend**, not the opposite.
+
+#### Technologies
+- Node.js
+- Fastify
+- TypeScript
+- Drizzle ORM
+- PostgreSQL
+
+#### Responsibilities
+- Data persistence
+- Validation at boundaries
+- Expose simple, explicit APIs
+- Never contain UI-specific logic
+- Never duplicate business rules already defined in the rules engine
+
+#### Principles
+- Domain-oriented modules
+- Explicit contracts
+- Minimal middleware
+- Predictable error handling
+
+---
+
+### 7.3 Database
+
+#### Technology
+- PostgreSQL
+
+#### Responsibilities
+- Persist canonical domain data
+- Maintain data integrity
+- Support auditability
+- Enable efficient querying for dashboards
+
+#### Principles
+- Financial data is immutable
+- Migrations are mandatory
+- JSONB is used only when flexibility is required
+- Schema reflects domain, not UI needs
+
+---
+
+### 7.4 Rules Engine (Shared Domain Logic)
+
+#### Technology
+- TypeScript
+- Shared as a standalone package
+
+#### Responsibilities
+- All financial calculations
+- Categorization logic
+- Recommendation generation
+- Explainability
+
+#### Principles
+- Pure functions
+- Deterministic outputs
+- Fully testable
+- No dependencies on infrastructure, UI, or frameworks
+
+---
+
+### 7.5 Infrastructure
+
+#### Technologies
+- AWS (minimal setup)
+- Environment-based configuration
+
+#### Responsibilities
+- Host backend and frontend
+- Provide secure environment separation
+- Support local development parity
+
+#### Principles
+- Prefer managed services
+- Avoid premature scaling
+- Infrastructure must not leak into business logic
+
+---
+
+### 7.6 What This Project Is NOT
+
+- Not a backend-heavy system
+- Not an infrastructure showcase
+- Not a microservices architecture
+- Not framework experimentation
+
+This project is intentionally focused on:
+> **Frontend architecture, domain clarity, and product-oriented engineering.**
+
 
 ---
 

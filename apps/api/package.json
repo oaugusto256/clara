@@ -1,0 +1,9 @@
+{
+  "name": "@clara/api",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "echo \"Start API server\"",
+    "start": "echo \"Run API\""
+  }
+}

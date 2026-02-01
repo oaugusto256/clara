@@ -1,0 +1,9 @@
+{
+  "name": "@clara/web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "echo \"Start web dev server\"",
+    "build": "echo \"Build web app\""
+  }
+}
