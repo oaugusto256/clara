@@ -16,7 +16,7 @@
 		"lint": "biome check",
 		"format": "biome format \"src/**/*.{ts,tsx,js,json,md}\"",
 		"test": "vitest",
-		"test:ci": "vitest run"
+		"test:ci": "vitest run --reporter verbose"
 	},
 	"dependencies": {
 		"zod": "^3.23.0"

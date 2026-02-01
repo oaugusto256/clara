@@ -7,7 +7,8 @@
     "declarationMap": true,
     "tsBuildInfoFile": "dist/.tsbuildinfo",
     "composite": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": []
   },
   "include": ["src"]
 }

@@ -79,6 +79,10 @@ Each backlog item includes:
 **Dependencies**
 - F-01
 
+**Status**: **Done** — implemented shared schemas package, exported runtime Zod schemas, added package-level tests, integrated with `@clara/rules-engine` and `@clara/api`, and updated CI to run `test:ci` (2026-02-01)
+
+
+
 ---
 
 ## 🟢 Data Ingestion (Manual Import)
@@ -95,6 +99,8 @@ Each backlog item includes:
 
 **Dependencies**
 - F-02
+
+**Status**: **In Progress** — added a minimal CSV parser, normalization utility in `@clara/api`, and tests that validate parsing and normalization. (2026-02-01)
 
 ---
 
