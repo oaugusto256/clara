@@ -62,13 +62,17 @@ A mocked Open Finance flow is used to simulate:
 
 ## 🧱 Architecture
 
+```text
 apps/
-├─ web/ # React front-end
-├─ api/ # Fastify backend
+├─ web/           # React front-end
+└─ api/           # Fastify backend
+
 packages/
-├─ schemas/ # Shared Zod schemas
-├─ rules-engine/ # Categorization and recommendation logic
-└─ ui/ # Design system
+├─ schemas/       # Shared Zod schemas
+├─ rules-engine/  # Categorization and recommendation logic
+└─ ui/            # Design system
+```
+
 
 ## 🧠 Rules Engine
 
