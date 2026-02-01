@@ -2,17 +2,24 @@
 	"name": "clara",
 	"private": true,
 	"version": "0.0.0",
-	"workspaces": ["apps/*", "packages/*"],
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	],
 	"scripts": {
 		"bootstrap": "pnpm install",
+		"postinstall": "pnpm -w -F @clara/schemas build",
 		"build": "pnpm -r run build",
 		"test": "pnpm -r run test",
 		"lint": "pnpm -r run lint",
 		"format": "pnpm -r run format"
 	},
 	"devDependencies": {
-		"typescript": "^5.5.0",
+		"@types/node": "^25.2.0",
+		"@types/uuid": "^11.0.0",
 		"biome": "0.3.3",
+		"ts-node-dev": "^2.0.0",
+		"typescript": "^5.5.0",
 		"vitest": "^1.2.0"
 	}
 }
