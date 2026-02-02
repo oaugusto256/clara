@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { normalizeInput } from '../src/normalize';
+import { normalizeInput } from '../src/core/transactions/normalize';
 
 describe('api: normalizeInput', () => {
   it('converts normalized input to Transaction and validates with shared schemas', () => {

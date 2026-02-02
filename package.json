@@ -11,6 +11,7 @@
 		"postinstall": "pnpm -w -F @clara/schemas build",
 		"build": "pnpm -r run build",
 		"test": "pnpm -r run test",
+		"test:ci": "pnpm -r run test:ci",
 		"lint": "pnpm -r run lint",
 		"format": "pnpm -r run format"
 	},

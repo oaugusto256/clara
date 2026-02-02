@@ -1,8 +1,8 @@
 import { TransactionSchema } from '@clara/schemas';
 import { readFileSync } from 'fs';
 import { describe, expect, it } from 'vitest';
-import { parseCsv } from '../src/csv';
-import { normalizeInput } from '../src/normalize';
+import { normalizeInput } from '../src/core/transactions/normalize';
+import { parseCsv } from '../src/infra/csv/csvParser';
 
 describe('api: csv parsing and normalization', () => {
   it('parses a valid CSV and normalizes transactions', () => {
