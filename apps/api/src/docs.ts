@@ -1,9 +1,9 @@
+import { NormalizedTransactionInputSchema, TransactionSchema } from '@clara/schemas';
 import type { FastifyInstance } from 'fastify';
 import fs from 'fs';
 import path from 'path';
 import * as swaggerUiDist from 'swagger-ui-dist';
 import { zodToJsonSchema } from 'zod-to-json-schema';
-import { NormalizedTransactionInputSchema, TransactionSchema } from '@clara/schemas';
 
 export function buildOpenApiSpec(base?: any) {
   const spec = {
@@ -17,13 +17,15 @@ export function buildOpenApiSpec(base?: any) {
   } as any;
 
   // Merge generated JSON Schema components from Zod
-  const generatedNormalized = zodToJsonSchema(NormalizedTransactionInputSchema, 'NormalizedTransactionInput');
-  const generatedTransaction = zodToJsonSchema(TransactionSchema, 'Transaction');
+  // zod-to-json-schema can produce very complex generic types which cause the TS compiler
+  // to hit deep instantiation errors. Cast to `any` to keep the build fast and predictable.
+  const generatedNormalized: any = zodToJsonSchema(NormalizedTransactionInputSchema as any, 'NormalizedTransactionInput');
+  const generatedTransaction: any = zodToJsonSchema(TransactionSchema as any, 'Transaction');
 
   function extractDef(generated: any, name: string) {
-    if (generated.$defs && generated.$defs[name]) return generated.$defs[name];
-    if (generated.definitions && generated.definitions[name]) return generated.definitions[name];
-    if (generated.$ref && (generated.definitions || generated.$defs)) {
+    if (generated && generated.$defs && generated.$defs[name]) return generated.$defs[name];
+    if (generated && generated.definitions && generated.definitions[name]) return generated.definitions[name];
+    if (generated && generated.$ref && (generated.definitions || generated.$defs)) {
       const defs = generated.definitions || generated.$defs || {};
       const key = generated.$ref.replace('#/definitions/', '').replace('#/$defs/', '');
       return defs[key] || generated;

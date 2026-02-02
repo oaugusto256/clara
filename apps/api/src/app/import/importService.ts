@@ -1,5 +1,5 @@
-import { parseCsv, type ParseResult } from '../../infra/csv/csvParser';
 import { normalizeInput } from '../../core/transactions/normalize';
+import { parseCsv, type ParseResult } from '../../infra/csv/csvParser';
 
 export type ImportResult = {
   parsed: ParseResult['ok'];
