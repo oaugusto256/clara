@@ -13,5 +13,8 @@
     "format": "biome format \"src/**/*.{ts,tsx,js,json,md}\"",
     "test": "vitest",
     "test:ci": "vitest run --reporter verbose"
-  }
+  },
+   "devDependencies": {
+    "uuid": "^9.0.0"
+   }
 }

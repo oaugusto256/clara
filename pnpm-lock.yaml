@@ -93,6 +93,10 @@ importers:
       '@clara/schemas':
         specifier: workspace:*
         version: link:../schemas
+    devDependencies:
+      uuid:
+        specifier: ^9.0.0
+        version: 9.0.1
 
   packages/schemas:
     dependencies:
