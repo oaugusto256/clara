@@ -13,8 +13,13 @@
 	},
 	"dependencies": {
 		"@clara/schemas": "workspace:*",
+		"@fastify/static": "^9.0.0",
+		"@fastify/swagger": "^9.6.1",
+		"@fastify/swagger-ui": "^5.2.5",
 		"fastify": "^4.24.0",
-		"uuid": "^9.0.0"
+		"swagger-ui-dist": "^5.31.0",
+		"uuid": "^9.0.0",
+		"zod-to-json-schema": "^3.25.1"
 	},
 	"devDependencies": {
 		"@types/uuid": "^11.0.0",

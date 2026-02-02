@@ -165,3 +165,8 @@ Developer tooling notes:
 - Use `pnpm run format` to format the workspace (uses Biome: `biome format`). ✨
 - You can run Biome directly: `npx biome check` / `npx biome format`.
 - Note: ESLint and Prettier configs were removed in favor of Biome for a single-tool developer experience.
+
+API docs and preview:
+- Start the API server (`pnpm -w -F @clara/api run dev` or `pnpm -w -F @clara/api run start` after build).
+- Open the interactive preview at: `http://localhost:3000/docs` (loads `/docs/json`).
+- The OpenAPI JSON is available at `/docs/json` for automated tools and previews.

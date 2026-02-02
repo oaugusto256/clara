@@ -7,3 +7,8 @@ coverage/
 
 # TypeScript incremental build files
 *.tsbuildinfo
+
+# avoid tracking compiled artifacts accidentally emitted into src
+**/src/**/*.js
+**/src/**/*.js.map
+**/src/**/*.d.ts

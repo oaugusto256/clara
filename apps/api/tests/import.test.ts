@@ -40,4 +40,19 @@ describe('api: import endpoint', () => {
     expect(body.normalized.length).toBe(2);
     await app.close();
   });
+
+  it('serves OpenAPI JSON at /docs/json', async () => {
+    const app = buildServer();
+    const res = await app.inject({ method: 'GET', url: '/docs/json' });
+    expect(res.statusCode).toBe(200);
+    const body = JSON.parse(res.body);
+    expect(body).toHaveProperty('openapi');
+    expect(body.info.title).toBe('Clara API');
+    expect(body.components).toBeDefined();
+    expect(body.components.schemas.Transaction).toBeDefined();
+    // Check generated schema has expected properties from Zod
+    expect(body.components.schemas.Transaction.properties.id).toBeDefined();
+    expect(body.components.schemas.NormalizedTransactionInput.properties.accountExternalId).toBeDefined();
+    await app.close();
+  });
 });
