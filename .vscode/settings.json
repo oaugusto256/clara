@@ -5,5 +5,8 @@
   "biome.server.enabled": false,
   "biome.enable": false,
   "biome.enabled": false,
-  "biome.lsp.enabled": false
+  "biome.lsp.enabled": false,
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  }
 }

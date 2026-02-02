@@ -14,7 +14,7 @@
     "test": "vitest",
     "test:ci": "vitest run --reporter verbose"
   },
-   "devDependencies": {
+  "devDependencies": {
     "uuid": "^9.0.0"
-   }
+  }
 }
