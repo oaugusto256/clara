@@ -28,139 +28,87 @@ No Open Finance integration is included in MVP 1.
 - User-to-user features
 
 ---
-
-## 🧱 MVP 1 Pillars
-
 1. **Data Ingestion (Manual)**
 2. **Financial Categorization**
-3. **Clear Visualizations**
-4. **Basic Financial Recommendations**
 
----
-
-## 🗂 Backlog Structure
-
-Each backlog item includes:
-- a short description
-- acceptance criteria
-- dependency level
-
----
-
-## 🟢 Foundation (Must-Have)
 
 ### F-01 — Project Setup
-**Description**
-- Initialize monorepo
 - Setup base folder structure
 - Setup TypeScript configs
-
 **Acceptance Criteria**
-- Project runs locally
+
+**Status**: **Done** — implemented shared schemas package, exported runtime Zod schemas, added package-level tests, integrated with `@clara/rules-engine` and `@clara/api`, and updated CI to run `test:ci` (2026-02-01)
 - Linting and formatting configured
-- Clear package boundaries
 
 **Dependencies**
 - None
 
-**Status**: **Done** — basic workspace, Biome, TypeScript configs, and CI updated (2026-02-01)
-
----
-
 ### F-02 — Domain Schemas
-**Description**
-- Implement schemas defined in `DOMAIN_SCHEMAS.md`
-- Export shared types
 
 **Acceptance Criteria**
-- Schemas compile
 - Used consistently across packages
 
+**Status**: **Done** — CSV parser, normalization utility, and tests implemented. Endpoint validates, parses, and normalizes CSV; errors are reported; output matches canonical `Transaction` schema. (2026-02-02)
 **Dependencies**
-- F-01
 
 **Status**: **Done** — implemented shared schemas package, exported runtime Zod schemas, added package-level tests, integrated with `@clara/rules-engine` and `@clara/api`, and updated CI to run `test:ci` (2026-02-01)
 
 
 
----
 
 ## 🟢 Data Ingestion (Manual Import)
-
-### D-01 — CSV Import
 **Description**
 - Allow users to upload CSV files with transactions
-- Parse and validate data
 
-**Acceptance Criteria**
+**Status**: **Done** — contracts align with domain schemas, no infra dependencies (2026-02-01)
 - CSV is parsed successfully
-- Invalid rows are rejected with clear errors
 - Output matches canonical `Transaction` schema
 
 **Dependencies**
-- F-02
 
-**Status**: **In Progress** — added a minimal CSV parser, normalization utility in `@clara/api`, and tests that validate parsing and normalization. (2026-02-01)
-
----
+**Status**: **Done** — CSV parser, normalization utility, and tests implemented. Endpoint validates, parses, and normalizes CSV; errors are reported; output matches canonical `Transaction` schema. (2026-02-02)
 
 ### D-02 — OFX Import
-**Description**
 - Support OFX file import
-- Normalize OFX data
+**Status**: **Done** — aggregation logic and tests implemented (2026-02-01)
 
-**Acceptance Criteria**
 - OFX files are parsed
 - Transactions are normalized
 
-**Dependencies**
 - F-02
 
----
 
 ## 🟢 Categorization
 
 ### C-01 — Default Categories
 **Description**
-- Seed default expense categories
 
-**Acceptance Criteria**
+**Status**: **Done** — recommendation logic and tests implemented (2026-02-01)
 - Categories are available after setup
-- Categories are used by rules engine
 
 **Dependencies**
 - F-02
 
 ---
-
-### C-02 — Automatic Categorization
 **Description**
 - Categorize transactions using simple rules (keywords / mappings)
-
-**Acceptance Criteria**
 - Transactions receive a category
 - Rules are deterministic
-
 **Dependencies**
-- D-01, D-02
+**Status**: **Done** — Fastify server and health check implemented (2026-02-01)
 
----
 
 ### C-03 — Manual Category Override
 **Description**
-- Allow user to change transaction category manually
 
 **Acceptance Criteria**
 - Category change is persisted
 - Recalculation is triggered
 
-**Dependencies**
-- C-02
 
 ---
-
 ## 🟢 Rules Engine (Core Logic)
-
+**Status**: **In Progress** — endpoints for transactions, categories, and recommendations not yet implemented (2026-02-02)
 ### R-01 — Rules Engine Contracts
 **Description**
 - Define input/output contracts for rules engine
@@ -212,6 +160,9 @@ Each backlog item includes:
 **Acceptance Criteria**
 - Server starts
 - Health endpoint responds
+
+
+**Status**: **Done** — Fastify server and health check implemented (2026-02-01)
 
 **Dependencies**
 - F-01
