@@ -3,7 +3,7 @@
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
-		"dev": "pnpm -w -F @clara/schemas build --watch & ts-node-dev --respawn --transpile-only --ignore-watch node_modules --watch src src/index.ts",
+		"dev": "concurrently -k -n schemas,api -c yellow,cyan \"pnpm -w -F @clara/schemas build --watch\" \"ts-node-dev --respawn --transpile-only --ignore-watch node_modules --ignore-watch dist --ignore-watch tests --watch src src/index.ts\"",
 		"start": "node dist/index.js",
 		"build": "tsc -p tsconfig.json",
 		"lint": "biome check",
@@ -25,6 +25,7 @@
 	},
 	"devDependencies": {
 		"@types/uuid": "^11.0.0",
+		"concurrently": "^9.2.1",
 		"ts-node-dev": "^2.0.0"
 	}
 }

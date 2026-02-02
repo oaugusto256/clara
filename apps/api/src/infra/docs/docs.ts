@@ -3,10 +3,9 @@ import { NormalizedTransactionInputSchema, TransactionSchema } from '@clara/sche
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import { FastifyPluginAsync } from 'fastify';
-import fp from 'fastify-plugin';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 
-export const docsPlugin: FastifyPluginAsync = fp(async (app: import('fastify').FastifyInstance) => {
+export const docsPlugin: FastifyPluginAsync = async (app) => {
   // Build OpenAPI spec from Zod schemas
   const generatedNormalized: any = zodToJsonSchema(NormalizedTransactionInputSchema as any, 'NormalizedTransactionInput');
   const generatedTransaction: any = zodToJsonSchema(TransactionSchema as any, 'Transaction');
@@ -48,4 +47,4 @@ export const docsPlugin: FastifyPluginAsync = fp(async (app: import('fastify').F
     transformSpecification: (spec: any) => spec,
     transformSpecificationClone: true,
   });
-});
+};

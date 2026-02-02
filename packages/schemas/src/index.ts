@@ -104,11 +104,7 @@ export type NormalizedTransactionInput = {
   date: string; // ISO date
 };
 
-export * from './schemas';
 
-// Re-export runtime Zod schemas and helpers so other packages can import them
-export {
-  AccountSchema, BudgetSchema, CategorySchema, DEFAULT_CATEGORY_KEYS,
-  DefaultCategoriesSchema, EconomicRuleSchema, MoneySchema, NormalizedTransactionInputSchema, RecommendationSchema, TransactionSchema, UserProfileSchema, UserSchema
-} from './schemas';
+// Only re-export everything from schemas, do not import from schemas in this file
+export * from './schemas';
 

@@ -4,11 +4,8 @@
     "outDir": "dist",
     "rootDir": "src",
     "declaration": true,
-    "declarationMap": true,
-    "tsBuildInfoFile": "dist/.tsbuildinfo",
-    "composite": true,
     "skipLibCheck": true,
     "types": []
   },
-  "include": ["src"]
+  "include": ["src", "src/**/*", "src/schemas.ts"]
 }

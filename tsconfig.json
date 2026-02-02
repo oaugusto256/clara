@@ -10,5 +10,9 @@
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"types": ["node"]
-	}
+	},
+	"include": [
+  "packages/*/src",
+  "apps/*/src"
+	]
 }
