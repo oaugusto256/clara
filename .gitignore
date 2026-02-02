@@ -12,3 +12,5 @@ coverage/
 **/src/**/*.js
 **/src/**/*.js.map
 **/src/**/*.d.ts
+!apps/api/src/types/uuid.d.ts
+
