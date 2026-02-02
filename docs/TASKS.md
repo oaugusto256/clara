@@ -71,7 +71,7 @@ Performance, UX improvements, documentation, deploy.
 - [x] Define Open Finance positioning (Open Finance–ready)
 - [x] Create `TASKS.md`
 - [x] Define folder structure (monorepo)
-- [ ] Setup shared schemas package
+- [x] Setup shared schemas package
 
 ---
 
@@ -79,7 +79,7 @@ Performance, UX improvements, documentation, deploy.
 
 #### Financial Rules Engine
 
-- [ ] Define rules engine input/output contracts
+- [x] Define rules engine input/output contracts
 - [ ] Implement transaction grouping by category
 - [ ] Implement actual spending calculation
 - [ ] Implement base recommendation calculation
@@ -94,25 +94,25 @@ Performance, UX improvements, documentation, deploy.
 
 #### CSV / OFX Import
 
-- [ ] Define supported file formats
-- [ ] Create normalized transaction input schema
-- [ ] Implement CSV parser
+- [x] Define supported file formats
+- [x] Create normalized transaction input schema
+- [x] Implement CSV parser
 - [ ] Implement OFX parser
-- [ ] Normalize imported data to canonical `Transaction`
-- [ ] Add validation and error handling
+- [x] Normalize imported data to canonical `Transaction`
+- [x] Add validation and error handling
 - [ ] Create ingestion reprocessing flow
 
 ---
 
 ### 4.4 Backend Tasks (Level 3)
 
-- [ ] Setup Fastify server
+- [x] Setup Fastify server
 - [ ] Setup PostgreSQL connection
 - [ ] Setup Drizzle ORM
 - [ ] Implement transaction persistence
 - [ ] Implement category persistence
 - [ ] Implement recommendation persistence
-- [ ] Expose read-only APIs for dashboard
+- [x] Expose read-only APIs for dashboard
 - [ ] Add audit logging
 
 ---
