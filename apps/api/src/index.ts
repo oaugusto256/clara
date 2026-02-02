@@ -1,6 +1,7 @@
-import { buildServer } from './server';
 
-const server = buildServer();
+import { createServer } from './server';
+
+const server = createServer();
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
 

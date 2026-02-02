@@ -8,7 +8,7 @@ import { zodToJsonSchema } from 'zod-to-json-schema';
 export function buildOpenApiSpec(base?: any) {
   const spec = {
     openapi: '3.0.0',
-    info: { title: 'Clara API', version: '0.1.0', description: 'CSV import preview' },
+    info: { title: 'Clara API', version: '0.1.0', description: 'Financial Transactions API' },
     components: {
       schemas: {},
     },
