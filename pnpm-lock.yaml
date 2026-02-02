@@ -27,9 +27,6 @@ importers:
       '@types/node':
         specifier: ^25.2.0
         version: 25.2.0
-      '@types/uuid':
-        specifier: ^11.0.0
-        version: 11.0.0
       biome:
         specifier: 0.3.3
         version: 0.3.3
@@ -39,6 +36,9 @@ importers:
       typescript:
         specifier: ^5.5.0
         version: 5.9.3
+      uuid:
+        specifier: ^9.0.0
+        version: 9.0.1
       vitest:
         specifier: ^1.2.0
         version: 1.6.1(@types/node@25.2.0)
@@ -76,9 +76,6 @@ importers:
         specifier: ^3.25.1
         version: 3.25.1(zod@3.25.76)
     devDependencies:
-      '@types/uuid':
-        specifier: ^11.0.0
-        version: 11.0.0
       concurrently:
         specifier: ^9.2.1
         version: 9.2.1
@@ -103,6 +100,10 @@ importers:
       zod:
         specifier: ^3.23.0
         version: 3.25.76
+    devDependencies:
+      uuid:
+        specifier: ^9.0.0
+        version: 9.0.1
 
   packages/ui: {}
 
@@ -469,10 +470,6 @@ packages:
 
   '@types/strip-json-comments@0.0.30':
     resolution: {integrity: sha512-7NQmHra/JILCd1QqpSzl8+mJRc8ZHz3uDm8YV1Ks9IhK0epEiTw8aIErbvH9PI+6XbqhyIQy3462nEsn7UVzjQ==}
-
-  '@types/uuid@11.0.0':
-    resolution: {integrity: sha512-HVyk8nj2m+jcFRNazzqyVKiZezyhDKrGUA3jlEcg/nZ6Ms+qHwocba1Y/AaVaznJTAM9xpdFSh+ptbNrhOGvZA==}
-    deprecated: This is a stub types definition. uuid provides its own type definitions, so you do not need this installed.
 
   '@vitest/expect@1.6.1':
     resolution: {integrity: sha512-jXL+9+ZNIJKruofqXuuTClf44eSpcHlgj3CiuNihUF3Ioujtmc0zIa3UJOW5RjDK1YLBJZnWBlPuqhYycLioog==}
@@ -1905,10 +1902,6 @@ snapshots:
   '@types/strip-bom@3.0.0': {}
 
   '@types/strip-json-comments@0.0.30': {}
-
-  '@types/uuid@11.0.0':
-    dependencies:
-      uuid: 9.0.1
 
   '@vitest/expect@1.6.1':
     dependencies:
