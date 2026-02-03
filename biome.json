@@ -1,21 +1,76 @@
 {
-	"files": ["**/*.{ts,tsx,js,jsx,json,md}"],
-	"excludeFiles": ["node_modules", "dist"],
-
-	"format": {
-		"enabled": true,
-		"lineWidth": 100,
-		"singleQuote": true,
-		"trailingComma": "all",
-		"tabWidth": 2,
-		"semi": true
+	"$schema": "https://biomejs.dev/schemas/2.1.2/schema.json",
+	"assist": {
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
+		}
 	},
-
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "space",
+		"includes": [
+			"**/*.ts",
+			"**/*.tsx",
+			"**/*.js",
+			"**/*.jsx"
+		],
+		"noMultipleEmptyLines": {
+			"level": "error",
+			"max": 1
+		}
+	},
+	"javascript": {
+		"formatter": {
+			"trailingCommas": "es5",
+			"arrowParentheses": "asNeeded"
+		}
+	},
 	"linter": {
 		"enabled": true,
+		"includes": [
+			"**/*.ts",
+			"**/*.tsx",
+			"**/*.js",
+			"**/*.jsx"
+		],
 		"rules": {
 			"recommended": true,
-			"@typescript-eslint/no-explicit-any": "off"
+			"style": {
+				"useImportType": "off",
+				"noUnusedTemplateLiteral": "off",
+				"useLiteralEnumMembers": "off",
+				"noNonNullAssertion": "off",
+				"noDescendingSpecificity": "off",
+				"noRestrictedImports": {
+					"level": "error"
+				}
+			},
+			"suspicious": {
+				"noExplicitAny": "off",
+				"noImplicitAnyLet": "off",
+				"noConsole": {
+					"level": "error",
+					"options": {
+						"allow": [
+							"error"
+						]
+					}
+				}
+			},
+			"correctness": {
+				"useExhaustiveDependencies": "off",
+				"noUnusedVariables": "error",
+				"noUnusedImports": "error",
+				"noUnusedPrivateClassMembers": "error"
+			},
+			"complexity": {
+				"noForEach": "off"
+			},
+			"a11y": {
+				"noSvgWithoutTitle": "off"
+			}
 		}
 	}
 }

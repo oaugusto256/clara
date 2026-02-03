@@ -21,7 +21,7 @@
 		"fastify-plugin": "^5.1.0",
 		"swagger-ui-dist": "^5.31.0",
 		"zod-to-json-schema": "^3.25.1",
-				"uuid": "^9.0.0"
+		"uuid": "^9.0.0"
 	},
 	"devDependencies": {
 		"concurrently": "^9.2.1",
