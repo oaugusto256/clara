@@ -88,7 +88,7 @@ export const RecommendationSchema = z.object({
 });
 
 export const NormalizedTransactionInputSchema = z.object({
-  accountExternalId: z.string(),
+  accountExternalId: z.string().optional(),
   description: z.string(),
   amount: z.number(),
   currency: z.string(),

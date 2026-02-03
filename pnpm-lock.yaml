@@ -96,9 +96,6 @@ importers:
       fastify-plugin:
         specifier: ^5.1.0
         version: 5.1.0
-      swagger-ui-dist:
-        specifier: ^5.31.0
-        version: 5.31.0
       uuid:
         specifier: ^9.0.0
         version: 9.0.1

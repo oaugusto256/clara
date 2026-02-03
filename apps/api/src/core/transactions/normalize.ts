@@ -1,8 +1,8 @@
 import {
-    NormalizedTransactionInputSchema,
-    TransactionSchema,
-    type NormalizedTransactionInput,
-    type Transaction,
+  NormalizedTransactionInputSchema,
+  TransactionSchema,
+  type NormalizedTransactionInput,
+  type Transaction,
 } from '@clara/schemas';
 import { v4 as uuid } from 'uuid';
 
@@ -17,7 +17,7 @@ export function normalizeInput(input: NormalizedTransactionInput): Transaction {
   const tx: Transaction = {
     id: uuid(),
     userId: 'u1', // TODO: wire real user context
-    accountId: input.accountExternalId,
+    accountId: input.accountExternalId ?? 'unknown',
     description: input.description,
     amount: { amount: Math.round(input.amount), currency: input.currency },
     direction: 'expense',
@@ -25,8 +25,11 @@ export function normalizeInput(input: NormalizedTransactionInput): Transaction {
     source: 'csv',
   };
 
-  // Validate the canonical transaction before returning
-  TransactionSchema.parse(tx);
+  try {
+    TransactionSchema.parse(tx);
+  } catch (err) {
+    throw err;
+  }
 
   return tx;
 }

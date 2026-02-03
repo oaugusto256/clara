@@ -20,10 +20,10 @@ export default function DashboardLayout({ children }: { children?: React.ReactNo
           <span className="text-3xl font-bold text-white tracking-wide">Clara</span>
         </div>
         <nav className="flex-1 flex flex-col gap-2">
-          <a href="#" className="flex items-center gap-3 px-4 py-1 rounded-md text-white bg-gray-700 font-semibold"><span className="i-heroicons-home w-5 h-5" />Dashboard</a>
-          <a href="#" className="flex items-center gap-3 px-4 py-1 rounded-md text-gray-300 hover:bg-gray-700 hover:text-white transition"><span className="i-heroicons-banknotes w-5 h-5" />Transactions</a>
-          <a href="#" className="flex items-center gap-3 px-4 py-1 rounded-md text-gray-300 hover:bg-gray-700 hover:text-white transition"><span className="i-heroicons-tag w-5 h-5" />Categories</a>
-          <a href="#" className="flex items-center gap-3 px-4 py-1 rounded-md text-gray-300 hover:bg-gray-700 hover:text-white transition"><span className="i-heroicons-chart-pie w-5 h-5" />Reports</a>
+          <a href="#" className="flex px-4 py-1 rounded-md text-white bg-gray-700 font-semibold">Dashboard</a>
+          <a href="#" className="flex px-4 py-1 rounded-md text-gray-300 hover:bg-gray-700 hover:text-white transition">Transactions</a>
+          <a href="#" className="flex px-4 py-1 rounded-md text-gray-300 hover:bg-gray-700 hover:text-white transition">Categories</a>
+          <a href="#" className="flex px-4 py-1 rounded-md text-gray-300 hover:bg-gray-700 hover:text-white transition">Reports</a>
         </nav>
         <div className="text-center mt-auto pt-4 border-t border-gray-700 text-xs text-gray-500">&copy; {new Date().getFullYear()} Clara</div>
       </aside>

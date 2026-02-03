@@ -70,6 +70,8 @@ export function parseCsv(raw: string): ParseResult {
     value: 'amount',
     data: 'date',
     date: 'date',
+    // All possible aliases for description
+    title: 'description',
     description: 'description',
     descricao: 'description',
     'descrição': 'description',
@@ -83,9 +85,10 @@ export function parseCsv(raw: string): ParseResult {
     if (known[n]) headerMap[i] = known[n];
   });
 
-  // required keys
-  const requiredKeys = ['accountExternalId', 'amount', 'date', 'description'];
-  const hasRequired = requiredKeys.every((k) => Object.values(headerMap).includes(k));
+  // Require only canonical keys after mapping
+  const requiredKeys = ['date', 'description', 'amount'];
+  const mappedKeys = new Set(Object.values(headerMap));
+  const hasRequired = requiredKeys.every((k) => mappedKeys.has(k));
   if (!hasRequired) {
     result.errors.push({ line: 0, reason: 'Invalid header - missing required columns' });
     return result;
@@ -148,6 +151,7 @@ export function parseCsv(raw: string): ParseResult {
 
     try {
       const parsed = NormalizedTransactionInputSchema.parse(obj);
+
       result.ok.push(parsed as NormalizedTransactionInput);
     } catch (err: any) {
       result.errors.push({ line: i + 1, reason: err?.message ?? 'validation failed' });

@@ -19,7 +19,6 @@
 		"@fastify/swagger-ui": "^5.2.5",
 		"fastify": "^5.7.2",
 		"fastify-plugin": "^5.1.0",
-		"swagger-ui-dist": "^5.31.0",
 		"zod-to-json-schema": "^3.25.1",
 		"uuid": "^9.0.0"
 	},

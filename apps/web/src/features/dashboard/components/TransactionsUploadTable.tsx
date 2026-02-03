@@ -1,10 +1,9 @@
 import api from "@/api";
 import type { Transaction } from "@clara/schemas";
 import { useMutation } from "@tanstack/react-query";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 
 const TransactionsUploadTable = () => {
-  const inputRef = useRef<HTMLInputElement>(null);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -47,17 +46,14 @@ const TransactionsUploadTable = () => {
     reader.readAsText(file);
   }
 
-  console.log(transactions)
-
   return (
-    <div className="w-full max-w-4xl mx-auto">
+    <div className="w-full mx-auto">
       <div className="flex items-center gap-4 mb-6">
         <input
-          ref={inputRef}
           type="file"
           accept=".csv"
           onChange={handleFileChange}
-          className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary-dark cursor-pointer"
+          className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary-light cursor-pointer"
         />
       </div>
       <div className="overflow-x-auto shadow bg-gray-900 border border-gray-700 rounded-md">
@@ -79,7 +75,7 @@ const TransactionsUploadTable = () => {
             <tbody>
               {transactions.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="px-4 py-8 text-center text-gray-500">
+                  <td colSpan={16} className="px-4 py-8 text-center text-gray-500">
                     No transactions loaded. Upload a CSV file.
                   </td>
                 </tr>

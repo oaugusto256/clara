@@ -1,11 +1,12 @@
+
+
+import { NormalizedTransactionInputSchema, TransactionSchema } from '@clara/schemas';
 import type { FastifyPluginAsync } from "fastify";
+import { zodToJsonSchema } from 'zod-to-json-schema';
 import { importCsv } from '../../app/import/importService';
 
-export const importCsvRoute: FastifyPluginAsync = async (app) => {
-  // Import Zod schemas and convert to JSON Schema for OpenAPI
-  const { NormalizedTransactionInputSchema, TransactionSchema } = require('@clara/schemas');
-  const { zodToJsonSchema } = require('zod-to-json-schema');
 
+export const importCsvRoute: FastifyPluginAsync = async (app) => {
   app.post(
     '/import/csv',
     {
@@ -18,12 +19,36 @@ export const importCsvRoute: FastifyPluginAsync = async (app) => {
           200: {
             type: 'object',
             properties: {
-              parsed: { type: 'array', items: zodToJsonSchema(NormalizedTransactionInputSchema) },
-              normalized: { type: 'array', items: zodToJsonSchema(TransactionSchema) },
-              errors: { type: 'array', items: { type: 'object', properties: { line: { type: 'number' }, reason: { type: 'string' } }, additionalProperties: false } },
+              parsed: {
+                type: 'array',
+                items: zodToJsonSchema(NormalizedTransactionInputSchema),
+              },
+              normalized: {
+                type: 'array',
+                items: zodToJsonSchema(TransactionSchema),
+              },
+              errors: {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: {
+                    line: { type: 'number' },
+                    reason: { type: 'string' },
+                  },
+                  required: ['line', 'reason'],
+                  additionalProperties: false,
+                },
+              },
             },
+            required: ['parsed', 'normalized', 'errors'],
+            additionalProperties: false,
           },
-          400: { type: 'object', properties: { error: { type: 'string' } } },
+          400: {
+            type: 'object',
+            properties: { error: { type: 'string' } },
+            required: ['error'],
+            additionalProperties: false,
+          },
         },
       },
     },
