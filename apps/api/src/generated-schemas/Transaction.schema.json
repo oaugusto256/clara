@@ -1,0 +1,76 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "userId": {
+      "type": "string"
+    },
+    "accountId": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "amount": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "integer"
+        },
+        "currency": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 3
+        }
+      },
+      "required": [
+        "amount",
+        "currency"
+      ],
+      "additionalProperties": false
+    },
+    "direction": {
+      "type": "string",
+      "enum": [
+        "income",
+        "expense"
+      ]
+    },
+    "date": {
+      "type": "string"
+    },
+    "postedAt": {
+      "type": "string"
+    },
+    "categoryId": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "csv",
+        "ofx",
+        "open_finance_mock",
+        "open_finance_real"
+      ]
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": {}
+    }
+  },
+  "required": [
+    "id",
+    "userId",
+    "accountId",
+    "description",
+    "amount",
+    "direction",
+    "date",
+    "source"
+  ],
+  "additionalProperties": false,
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

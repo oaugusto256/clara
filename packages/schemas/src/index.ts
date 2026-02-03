@@ -97,7 +97,7 @@ export type Recommendation = {
 };
 
 export type NormalizedTransactionInput = {
-  accountExternalId: string;
+  accountExternalId?: string;
   description: string;
   amount: number;
   currency: string;

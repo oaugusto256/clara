@@ -5,7 +5,11 @@
     "outDir": "dist",
     "declarationDir": "dist",
     "tsBuildInfoFile": "dist/.tsbuildinfo",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "module": "esnext"
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "generated-schemas/*.json"
+  ]
 }

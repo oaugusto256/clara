@@ -1,8 +1,9 @@
 
 
-import { NormalizedTransactionInputSchema, TransactionSchema } from '@clara/schemas';
 import type { FastifyPluginAsync } from "fastify";
-import { zodToJsonSchema } from 'zod-to-json-schema';
+// import { zodToJsonSchema } from 'zod-to-json-schema';
+import NormalizedTransactionInputJsonSchema from '../generated-schemas/NormalizedTransactionInput.schema.json' with { type: "json" };
+import TransactionJsonSchema from '../generated-schemas/Transaction.schema.json' with { type: "json" };
 import { importCsv } from '../../app/import/importService';
 
 
@@ -21,11 +22,11 @@ export const importCsvRoute: FastifyPluginAsync = async (app) => {
             properties: {
               parsed: {
                 type: 'array',
-                items: zodToJsonSchema(NormalizedTransactionInputSchema),
+                items: NormalizedTransactionInputJsonSchema,
               },
               normalized: {
                 type: 'array',
-                items: zodToJsonSchema(TransactionSchema),
+                items: TransactionJsonSchema,
               },
               errors: {
                 type: 'array',

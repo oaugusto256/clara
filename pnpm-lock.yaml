@@ -52,7 +52,7 @@ importers:
         version: 7.3.1(@types/node@25.2.0)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2)
       zod-to-json-schema:
         specifier: ^3.25.1
-        version: 3.25.1(zod@3.25.76)
+        version: 3.25.1(zod@4.3.6)
     devDependencies:
       '@types/node':
         specifier: ^25.2.0
@@ -60,6 +60,9 @@ importers:
       biome:
         specifier: 0.3.3
         version: 0.3.3
+      ts-node:
+        specifier: ^10.9.2
+        version: 10.9.2(@types/node@25.2.0)(typescript@5.9.3)
       ts-node-dev:
         specifier: ^2.0.0
         version: 2.0.0(@types/node@25.2.0)(typescript@5.9.3)
@@ -101,7 +104,7 @@ importers:
         version: 9.0.1
       zod-to-json-schema:
         specifier: ^3.25.1
-        version: 3.25.1(zod@3.25.76)
+        version: 3.25.1(zod@4.3.6)
     devDependencies:
       concurrently:
         specifier: ^9.2.1
@@ -2389,6 +2392,9 @@ packages:
   zod@3.25.76:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
 
+  zod@4.3.6:
+    resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
+
 snapshots:
 
   '@babel/code-frame@7.29.0':
@@ -4430,8 +4436,10 @@ snapshots:
 
   yocto-queue@1.2.2: {}
 
-  zod-to-json-schema@3.25.1(zod@3.25.76):
+  zod-to-json-schema@3.25.1(zod@4.3.6):
     dependencies:
-      zod: 3.25.76
+      zod: 4.3.6
 
   zod@3.25.76: {}
+
+  zod@4.3.6: {}

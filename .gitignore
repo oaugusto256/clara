@@ -11,6 +11,8 @@ coverage/
 # avoid tracking compiled artifacts accidentally emitted into src
 **/src/**/*.js
 **/src/**/*.js.map
+
+# TypeScript declaration files
 **/src/**/*.d.ts
 !apps/api/src/types/uuid.d.ts
-
+!apps/api/src/generated-schemas/*.d.ts
