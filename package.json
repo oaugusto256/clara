@@ -9,7 +9,7 @@
 	"scripts": {
 		"bootstrap": "pnpm install",
 		"postinstall": "pnpm -w -F @clara/schemas build",
-		"build": "pnpm -r run build",
+		"build": "NODE_OPTIONS=--max-old-space-size=4096 pnpm -r run build",
 		"test": "pnpm -r run test",
 		"test:ci": "pnpm -r run test:ci",
 		"lint": "pnpm -r run lint",
