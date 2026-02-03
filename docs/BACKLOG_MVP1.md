@@ -202,12 +202,14 @@ No Open Finance integration is included in MVP 1.
 
 ### FE-02 — Transactions Table
 **Description**
-- Display transactions in a table
+- Display transactions in a table (basic upload & display implemented)
 - Support large datasets
 
 **Acceptance Criteria**
 - Table is virtualized
 - Sorting and filtering work
+
+**Status**: **Done (basic table, upload, and scrollable display implemented; virtualization pending)**
 
 **Dependencies**
 - B-02

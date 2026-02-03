@@ -122,6 +122,7 @@ Performance, UX improvements, documentation, deploy.
 #### Dashboard
 
 - [ ] Define dashboard layout
+- [x] Implement transactions table (basic upload & display)
 - [ ] Implement transactions table (virtualized)
 - [ ] Implement category pie chart
 - [ ] Implement monthly evolution chart
