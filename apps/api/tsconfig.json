@@ -11,6 +11,7 @@
   },
   "include": [
     "src",
-    "generated-schemas/*.json"
+    "src/generated-schemas/declarations.d.ts",
+    "src/generated-schemas/*.json"
   ]
 }
