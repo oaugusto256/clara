@@ -62,44 +62,46 @@ const TransactionsUploadTable = () => {
         ) : error ? (
           <div className="p-8 text-center text-red-400">{error}</div>
         ) : (
-          <table className="table-auto min-w-full text-sm text-left text-gray-200">
-            <thead className="bg-gray-800">
-              <tr>
-                <th className="px-6 py-4 font-semibold text-white">Date</th>
-                <th className="px-6 py-4 font-semibold text-white">Description</th>
-                <th className="px-6 py-4 font-semibold text-white">Amount</th>
-                <th className="px-6 py-4 font-semibold text-white">Direction</th>
-                <th className="px-6 py-4 font-semibold text-white">Currency</th>
-              </tr>
-            </thead>
-            <tbody>
-              {transactions.length === 0 ? (
+          <div className="max-h-96 overflow-y-auto">
+            <table className="table-auto min-w-full text-sm text-left text-gray-200">
+              <thead className="bg-gray-800 sticky top-0 z-10">
                 <tr>
-                  <td colSpan={16} className="px-4 py-8 text-center text-gray-500">
-                    No transactions loaded. Upload a CSV file.
-                  </td>
+                  <th className="px-6 py-4 font-semibold text-white">Date</th>
+                  <th className="px-6 py-4 font-semibold text-white">Description</th>
+                  <th className="px-6 py-4 font-semibold text-white">Amount</th>
+                  <th className="px-6 py-4 font-semibold text-white">Direction</th>
+                  <th className="px-6 py-4 font-semibold text-white">Currency</th>
                 </tr>
-              ) : (
-                transactions.map((tx, i) => (
-                  <tr key={i} className="border-t border-gray-800 last:border-b hover:bg-gray-800 transition-colors">
-                    <td className="px-6 py-4 whitespace-nowrap">{tx.date}</td>
-                    <td className="px-6 py-4">{tx.description}</td>
-                    <td className="px-6 py-4 text-right">
-                      {tx.amount && typeof tx.amount.amount === 'number' && typeof tx.amount.currency === 'string'
-                        ? tx.amount.amount.toLocaleString(undefined, { style: 'currency', currency: tx.amount.currency })
-                        : ''}
-                    </td>
-                    <td className="px-6 py-4">
-                      {tx.direction}
-                    </td>
-                    <td className="px-6 py-4">
-                      {tx.amount && typeof tx.amount.currency === 'string' ? tx.amount.currency : ''}
+              </thead>
+              <tbody>
+                {transactions.length === 0 ? (
+                  <tr>
+                    <td colSpan={16} className="px-4 py-8 text-center text-gray-500">
+                      No transactions loaded. Upload a CSV file.
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : (
+                  transactions.map((tx, i) => (
+                    <tr key={i} className="border-t border-gray-800 last:border-b hover:bg-gray-800 transition-colors">
+                      <td className="px-6 py-4 whitespace-nowrap">{tx.date}</td>
+                      <td className="px-6 py-4">{tx.description}</td>
+                      <td className="px-6 py-4 text-right">
+                        {tx.amount && typeof tx.amount.amount === 'number' && typeof tx.amount.currency === 'string'
+                          ? tx.amount.amount.toLocaleString(undefined, { style: 'currency', currency: tx.amount.currency })
+                          : ''}
+                      </td>
+                      <td className="px-6 py-4">
+                        {tx.direction}
+                      </td>
+                      <td className="px-6 py-4">
+                        {tx.amount && typeof tx.amount.currency === 'string' ? tx.amount.currency : ''}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>
