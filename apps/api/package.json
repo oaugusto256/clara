@@ -3,9 +3,10 @@
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
-		"dev": "concurrently -k -n schemas,api -c yellow,cyan \"pnpm -w -F @clara/schemas build --watch\" \"ts-node-dev --respawn --transpile-only --ignore-watch node_modules --ignore-watch dist --ignore-watch tests --watch src src/index.ts\"",
+		"dev": "ts-node-dev --respawn --transpile-only src/index.ts",
 		"start": "node dist/index.js",
-		"build": "tsc -p tsconfig.json",
+		"build": "tsc -p tsconfig.json && pnpm run copy-schemas",
+		"copy-schemas": "mkdir -p dist/generated-schemas && cp src/generated-schemas/*.json dist/generated-schemas/",
 		"lint": "biome check",
 		"format": "biome format \"**/*.{ts,tsx,js,json,md}\"",
 		"test": "vitest",

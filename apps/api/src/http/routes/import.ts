@@ -1,10 +1,9 @@
 
 
 import type { FastifyPluginAsync } from "fastify";
-// import { zodToJsonSchema } from 'zod-to-json-schema';
-import NormalizedTransactionInputJsonSchema from '../generated-schemas/NormalizedTransactionInput.schema.json' with { type: "json" };
-import TransactionJsonSchema from '../generated-schemas/Transaction.schema.json' with { type: "json" };
 import { importCsv } from '../../app/import/importService';
+import NormalizedTransactionInputJsonSchema from '../../generated-schemas/NormalizedTransactionInput.schema.json';
+import TransactionJsonSchema from '../../generated-schemas/Transaction.schema.json';
 
 
 export const importCsvRoute: FastifyPluginAsync = async (app) => {

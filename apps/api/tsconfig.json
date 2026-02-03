@@ -6,7 +6,8 @@
     "declarationDir": "dist",
     "tsBuildInfoFile": "dist/.tsbuildinfo",
     "skipLibCheck": true,
-    "module": "esnext"
+    "module": "commonjs",
+    "resolveJsonModule": true
   },
   "include": [
     "src",
