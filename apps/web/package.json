@@ -14,6 +14,8 @@
 		"@clara/ui": "workspace:*",
 		"@tailwindcss/vite": "^4.1.18",
 		"@tanstack/react-query": "^5.90.20",
+		"@tanstack/react-table": "^8.21.3",
+		"@tanstack/react-virtual": "^3.13.18",
 		"@types/react": "^19.2.10",
 		"@types/react-dom": "^19.2.3",
 		"@vitejs/plugin-react": "^5.1.3",

@@ -76,37 +76,37 @@ const TransactionsUploadTable = ({ transactions, setTransactions, containerClass
       ) : transactions.length === 0 ? (
         <div className="text-center text-gray-500 inline-block">No transactions loaded. Upload a CSV file.</div>
       ) : (
-        <div className="overflow-x-auto" style={{ maxHeight: 'calc(100vh - 210px)' }}>
-          <table className="table-auto min-w-full text-sm text-left text-gray-200">
-            <thead className="bg-gray-600 sticky top-0 z-10">
+        <div className="overflow-x-auto max-w-[calc(100vw-260px)] w-full">
+          <table className="min-w-full w-full text-sm text-left text-white border border-primary shadow-lg table-fixed">
+            <thead className="bg-gray-800 sticky top-0 z-20 text-white text-md font-semibold tracking-wide">
               <tr>
-                <th className="px-6 py-4 font-semibold text-white">Date</th>
-                <th className="px-6 py-4 font-semibold text-white">Description</th>
-                <th className="px-6 py-4 font-semibold text-white">Amount</th>
-                <th className="px-6 py-4 font-semibold text-white">Category</th>
-                <th className="px-6 py-4 font-semibold text-white">Currency</th>
+                <th className="p-2 w-24 border-1">Date</th>
+                <th className="p-2 w-64 border-1">Description</th>
+                <th className="p-2 w-32 border-1">Amount</th>
+                <th className="p-2 w-32 border-1">Category</th>
+                <th className="p-2 w-24 border-1">Currency</th>
               </tr>
             </thead>
-            <tbody>
-              {transactions.map((tx, i) => (
-                <tr key={i} className="border-t border-gray-800 last:border-b hover:bg-gray-800 transition-colors">
-                  <td className="px-6 py-4 whitespace-nowrap">{tx.date}</td>
-                  <td className="px-6 py-4">{tx.description}</td>
-                  <td className="px-6 py-4 text-right">
-                    {tx.amount && typeof tx.amount.amount === 'number' && typeof tx.amount.currency === 'string'
-                      ? tx.amount.amount.toLocaleString(undefined, { style: 'currency', currency: tx.amount.currency })
-                      : ''}
-                  </td>
-                  <td className="px-6 py-4">
-                    {tx.categoryKey}
-                  </td>
-                  <td className="px-6 py-4">
-                    {tx.amount && typeof tx.amount.currency === 'string' ? tx.amount.currency : ''}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
           </table>
+          <div className="overflow-y-auto max-h-[calc(100vh-260px)] w-full">
+            <table className="min-w-full w-full text-sm text-left text-white table-fixed">
+              <tbody className="bg-gray-900">
+                {transactions.map((tx, i) => (
+                  <tr key={i} className="border-t border-primary last:border-b hover:bg-primary/10 transition-colors w-full text-base font-medium">
+                    <td className="px-2 py-4 text-sm whitespace-nowrap w-24">{tx.date}</td>
+                    <td className="px-2 py-4 text-sm w-64">{tx.description}</td>
+                    <td className="px-2 py-4 text-sm text-right w-32">
+                      {tx.amount && typeof tx.amount.amount === 'number' && typeof tx.amount.currency === 'string'
+                        ? tx.amount.amount.toLocaleString(undefined, { style: 'currency', currency: tx.amount.currency })
+                        : ''}
+                    </td>
+                    <td className="px-2 py-4 text-sm w-32">{tx.categoryKey}</td>
+                    <td className="px-2 py-4 text-sm w-24">{tx.amount && typeof tx.amount.currency === 'string' ? tx.amount.currency : ''}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </Card>
