@@ -170,17 +170,33 @@ const TransactionsUploadTable = ({ transactions, setTransactions, containerClass
                           case "currency": widthClass = "w-24"; break;
                           default: widthClass = "";
                         }
+                        const isSortable = header.column.getCanSort();
                         return (
                           <th
                             key={header.id}
-                            className={["p-2 border-1 cursor-pointer select-none", widthClass].join(" ")}
-                            onClick={header.column.getCanSort() ? () => header.column.toggleSorting() : undefined}
+                            className={["p-2 border-1 select-none", widthClass].join(" ")}
                           >
-                            {header.isPlaceholder ? null : header.column.columnDef.header}
-                            {header.column.getCanSort() && (
-                              <span className="ml-2 text-xs">
-                                {header.column.getIsSorted() === 'asc' ? '▲' : header.column.getIsSorted() === 'desc' ? '▼' : ''}
-                              </span>
+                            {header.isPlaceholder ? null : (
+                              isSortable ? (
+                                <button
+                                  type="button"
+                                  className="inline-flex items-center w-full cursor-pointer text-left"
+                                  onClick={() => header.column.toggleSorting()}
+                                >
+                                  {header.column.columnDef.header}
+                                  <span className="ml-2 text-xs">
+                                    {header.column.getIsSorted() === 'asc'
+                                      ? '▲'
+                                      : header.column.getIsSorted() === 'desc'
+                                        ? '▼'
+                                        : ''}
+                                  </span>
+                                </button>
+                              ) : (
+                                <span className="inline-flex items-center w-full">
+                                  {header.column.columnDef.header}
+                                </span>
+                              )
                             )}
                           </th>
                         );
