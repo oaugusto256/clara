@@ -37,16 +37,36 @@ const columns = [
     header: 'Description',
     cell: info => info.getValue(),
   }),
-  columnHelper.accessor(row => {
-    // Defensive: return formatted string or empty
-    if (row.amount && typeof row.amount.amount === 'number' && typeof row.amount.currency === 'string') {
-      return row.amount.amount.toLocaleString(undefined, { style: 'currency', currency: row.amount.currency });
-    }
-    return '';
-  }, {
+  columnHelper.accessor(row => (
+    row.amount && typeof row.amount.amount === 'number'
+      ? row.amount.amount
+      : null
+  ), {
     id: 'amount',
     header: 'Amount',
-    cell: info => info.getValue(),
+    cell: info => {
+      const original = info.row.original;
+      const value = info.getValue();
+      if (typeof value !== 'number') {
+        return '';
+      }
+      const currency =
+        original.amount && typeof original.amount.currency === 'string'
+          ? original.amount.currency
+          : undefined;
+      if (currency) {
+        try {
+          return value.toLocaleString(undefined, {
+            style: 'currency',
+            currency,
+          });
+        } catch {
+          // Fallback to locale number formatting if currency is invalid
+          return value.toLocaleString();
+        }
+      }
+      return value.toLocaleString();
+    },
   }),
   columnHelper.accessor('categoryKey', {
     header: 'Category',
