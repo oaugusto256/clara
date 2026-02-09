@@ -1,13 +1,25 @@
 import type { Transaction } from "@clara/schemas";
 import React, { useState } from "react";
+import { Card } from "@clara/ui/src";
 import { useImportCsvMutation } from "../queries/useImportCsvMutation";
 
-const TransactionsUploadTable = () => {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+interface TransactionsUploadTableProps {
+  transactions: Transaction[];
+  setTransactions: React.Dispatch<React.SetStateAction<Transaction[]>>;
+}
+
+
+interface TransactionsUploadTableProps {
+  transactions: Transaction[];
+  setTransactions: React.Dispatch<React.SetStateAction<Transaction[]>>;
+  containerClassName?: string;
+  tableScrollClassName?: string;
+}
+
+const TransactionsUploadTable = ({ transactions, setTransactions, containerClassName = "", tableScrollClassName = "" }: TransactionsUploadTableProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  console.log(transactions)
 
   const importCsvMutation = useImportCsvMutation({
     onSuccess: (data) => {
@@ -42,24 +54,31 @@ const TransactionsUploadTable = () => {
   }
 
   return (
-    <div className="w-full mx-auto">
-      <div className="flex items-center gap-4 mb-6">
-        <input
-          type="file"
-          accept=".csv"
-          onChange={handleFileChange}
-          className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary-light cursor-pointer"
-        />
-      </div>
-      <div className="overflow-x-auto shadow bg-gray-900 border border-gray-700 rounded-md">
+    <div className={`w-full mx-auto flex flex-col min-h-0 ${containerClassName}`}>
+      <Card>
+        <div className="flex justify-between w-full gap-4 mb-6">
+          <h2 className="text-lg font-semibold text-white">All Transactions</h2>
+          <label className="block relative w-full max-w-xs">
+            <input
+              type="file"
+              accept=".csv"
+              onChange={handleFileChange}
+              className="block w-full text-sm text-gray-200 rounded-lg border border-primary bg-gray-900 pr-4 pl-4 py-2 font-semibold focus:outline-none focus:ring-2 focus:ring-primary file:hidden cursor-pointer transition-colors duration-150"
+              style={{ paddingRight: '7rem' }}
+            />
+            <span className="absolute right-2 top-1/2 -translate-y-1/2 bg-primary text-white rounded px-4 py-1 text-sm font-semibold pointer-events-none select-none shadow">Choose File</span>
+          </label>
+        </div>
         {loading ? (
           <div className="p-8 text-center text-gray-400">Uploading and parsing CSV...</div>
         ) : error ? (
           <div className="p-8 text-center text-red-400">{error}</div>
+        ) : transactions.length === 0 ? (
+          <div className="text-center text-gray-500 inline-block">No transactions loaded. Upload a CSV file.</div>
         ) : (
-          <div className="max-h-96 overflow-y-auto">
+          <div className="overflow-x-auto" style={{ maxHeight: 'calc(100vh - 210px)' }}>
             <table className="table-auto min-w-full text-sm text-left text-gray-200">
-              <thead className="bg-gray-800 sticky top-0 z-10">
+              <thead className="bg-gray-600 sticky top-0 z-10">
                 <tr>
                   <th className="px-6 py-4 font-semibold text-white">Date</th>
                   <th className="px-6 py-4 font-semibold text-white">Description</th>
@@ -69,36 +88,28 @@ const TransactionsUploadTable = () => {
                 </tr>
               </thead>
               <tbody>
-                {transactions.length === 0 ? (
-                  <tr>
-                    <td colSpan={16} className="px-4 py-8 text-center text-gray-500">
-                      No transactions loaded. Upload a CSV file.
+                {transactions.map((tx, i) => (
+                  <tr key={i} className="border-t border-gray-800 last:border-b hover:bg-gray-800 transition-colors">
+                    <td className="px-6 py-4 whitespace-nowrap">{tx.date}</td>
+                    <td className="px-6 py-4">{tx.description}</td>
+                    <td className="px-6 py-4 text-right">
+                      {tx.amount && typeof tx.amount.amount === 'number' && typeof tx.amount.currency === 'string'
+                        ? tx.amount.amount.toLocaleString(undefined, { style: 'currency', currency: tx.amount.currency })
+                        : ''}
+                    </td>
+                    <td className="px-6 py-4">
+                      {tx.categoryKey}
+                    </td>
+                    <td className="px-6 py-4">
+                      {tx.amount && typeof tx.amount.currency === 'string' ? tx.amount.currency : ''}
                     </td>
                   </tr>
-                ) : (
-                  transactions.map((tx, i) => (
-                    <tr key={i} className="border-t border-gray-800 last:border-b hover:bg-gray-800 transition-colors">
-                      <td className="px-6 py-4 whitespace-nowrap">{tx.date}</td>
-                      <td className="px-6 py-4">{tx.description}</td>
-                      <td className="px-6 py-4 text-right">
-                        {tx.amount && typeof tx.amount.amount === 'number' && typeof tx.amount.currency === 'string'
-                          ? tx.amount.amount.toLocaleString(undefined, { style: 'currency', currency: tx.amount.currency })
-                          : ''}
-                      </td>
-                      <td className="px-6 py-4">
-                        {tx.categoryKey}
-                      </td>
-                      <td className="px-6 py-4">
-                        {tx.amount && typeof tx.amount.currency === 'string' ? tx.amount.currency : ''}
-                      </td>
-                    </tr>
-                  ))
-                )}
+                ))}
               </tbody>
             </table>
           </div>
         )}
-      </div>
+      </Card>
     </div>
   );
 }
