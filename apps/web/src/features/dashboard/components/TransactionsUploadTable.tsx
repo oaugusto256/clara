@@ -139,6 +139,7 @@ const TransactionsUploadTable = ({ transactions, setTransactions, containerClass
           value={globalFilter}
           onChange={e => setGlobalFilter(e.target.value)}
           placeholder="Filter transactions..."
+          aria-label="Filter transactions"
           className="w-full max-w-xs px-3 py-2 rounded border border-primary bg-gray-900 text-white"
         />
       </div>
