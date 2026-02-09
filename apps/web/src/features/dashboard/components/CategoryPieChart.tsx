@@ -1,5 +1,6 @@
 // CategoryPieChart.tsx
 // Pie chart for spending by category
+import { Card } from "@clara/ui";
 import {
   Cell,
   Legend,
@@ -33,7 +34,7 @@ const COLORS = [
 export function CategoryPieChart({ data }: CategoryPieChartProps) {
   const total = data.reduce((sum, d) => sum + d.total, 0);
   return (
-    <div className="bg-gray-800 rounded-lg p-6 shadow w-full h-full flex flex-col">
+    <Card>
       <h2 className="text-lg font-semibold mb-4 text-white">Spending by Category</h2>
       {data.length === 0 ? (
         <div className="text-gray-400 text-sm">No data to display.</div>
@@ -69,7 +70,7 @@ export function CategoryPieChart({ data }: CategoryPieChartProps) {
       {total > 0 && (
         <div className="mt-4 text-xs text-gray-400">Total: {total.toLocaleString(undefined, { style: 'currency', currency: 'BRL' })}</div>
       )}
-    </div>
+    </Card>
   );
 }
 
