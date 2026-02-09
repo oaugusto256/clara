@@ -59,7 +59,7 @@ const columns = [
   }),
 ];
 
-const TransactionsUploadTable = ({ transactions, setTransactions, containerClassName = "", tableScrollClassName = "" }: TransactionsUploadTableProps) => {
+const TransactionsUploadTable = ({ transactions, setTransactions }: TransactionsUploadTableProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sorting, setSorting] = useState([]);
