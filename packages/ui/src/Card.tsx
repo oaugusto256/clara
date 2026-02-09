@@ -11,7 +11,7 @@ export interface CardProps {
  */
 const Card = ({ children, className = "" }: CardProps) => (
   <div
-    className={`bg-gray-800 rounded-lg p-6 shadow border border-gray-700 ${className}`}
+    className={`bg-gray-800 rounded-lg px-4 py-4 shadow border border-gray-700 ${className}`}
   >
     {children}
   </div>
