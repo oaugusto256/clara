@@ -14,6 +14,11 @@ export function normalizeInput(input: NormalizedTransactionInput): Transaction {
   // Validate incoming normalized input
   NormalizedTransactionInputSchema.parse(input);
 
+  // Filter out negative expenses (e.g., refunds, received payments)
+  if (input.amount < 0) {
+    throw new Error('Negative expense values are not included in spending totals');
+  }
+
   const tx: Transaction = {
     id: uuid(),
     userId: 'u1', // TODO: wire real user context

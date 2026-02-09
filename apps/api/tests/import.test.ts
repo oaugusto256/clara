@@ -17,8 +17,8 @@ describe('api: import endpoint', () => {
     expect(res.statusCode).toBe(200);
     const body = JSON.parse(res.body);
     expect(body.parsed.length).toBe(5);
-    expect(body.normalized.length).toBe(5);
-    expect(body.errors.length).toBe(1);
+    expect(body.normalized.length).toBe(3); // Only positive amounts normalized
+    expect(body.errors.length).toBe(3); // 3 negative rows filtered
 
     await app.close();
   });
@@ -37,7 +37,7 @@ describe('api: import endpoint', () => {
     expect(res.statusCode).toBe(200);
     const body = JSON.parse(res.body);
     expect(body.parsed.length).toBe(2);
-    expect(body.normalized.length).toBe(2);
+    expect(body.normalized.length).toBe(1); // Only positive amounts normalized
     await app.close();
   });
 

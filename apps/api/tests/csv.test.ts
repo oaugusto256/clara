@@ -45,8 +45,12 @@ describe('api: csv parsing and normalization', () => {
     expect(rows[0].date).toBe('2026-01-01');
 
     for (const row of rows) {
-      const tx = normalizeInput(row as any);
-      expect(() => TransactionSchema.parse(tx)).not.toThrow();
+      if (row.amount < 0) {
+        expect(() => normalizeInput(row as any)).toThrow('Negative expense values are not included in spending totals');
+      } else {
+        const tx = normalizeInput(row as any);
+        expect(() => TransactionSchema.parse(tx)).not.toThrow();
+      }
     }
   });
 
@@ -62,7 +66,11 @@ describe('api: csv parsing and normalization', () => {
     expect(res.ok[1].description).toContain('Pagamento; Taxas');
 
     for (const row of res.ok) {
-      expect(() => TransactionSchema.parse(normalizeInput(row as any))).not.toThrow();
+      if (row.amount < 0) {
+        expect(() => normalizeInput(row as any)).toThrow('Negative expense values are not included in spending totals');
+      } else {
+        expect(() => TransactionSchema.parse(normalizeInput(row as any))).not.toThrow();
+      }
     }
   });
 
@@ -78,7 +86,11 @@ describe('api: csv parsing and normalization', () => {
     expect(res.ok[1].amount).toBe(-25.5);
 
     for (const row of res.ok) {
-      expect(() => TransactionSchema.parse(normalizeInput(row as any))).not.toThrow();
+      if (row.amount < 0) {
+        expect(() => normalizeInput(row as any)).toThrow('Negative expense values are not included in spending totals');
+      } else {
+        expect(() => TransactionSchema.parse(normalizeInput(row as any))).not.toThrow();
+      }
     }
   });
 });
