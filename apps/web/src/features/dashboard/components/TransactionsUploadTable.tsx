@@ -31,16 +31,36 @@ const columns = [
     header: 'Description',
     cell: info => info.getValue(),
   }),
-  columnHelper.accessor(row => {
-    // Defensive: return formatted string or empty
-    if (row.amount && typeof row.amount.amount === 'number' && typeof row.amount.currency === 'string') {
-      return row.amount.amount.toLocaleString(undefined, { style: 'currency', currency: row.amount.currency });
-    }
-    return '';
-  }, {
+  columnHelper.accessor(row => (
+    row.amount && typeof row.amount.amount === 'number'
+      ? row.amount.amount
+      : null
+  ), {
     id: 'amount',
     header: 'Amount',
-    cell: info => info.getValue(),
+    cell: info => {
+      const original = info.row.original;
+      const value = info.getValue();
+      if (typeof value !== 'number') {
+        return '';
+      }
+      const currency =
+        original.amount && typeof original.amount.currency === 'string'
+          ? original.amount.currency
+          : undefined;
+      if (currency) {
+        try {
+          return value.toLocaleString(undefined, {
+            style: 'currency',
+            currency,
+          });
+        } catch {
+          // Fallback to locale number formatting if currency is invalid
+          return value.toLocaleString();
+        }
+      }
+      return value.toLocaleString();
+    },
   }),
   columnHelper.accessor('categoryKey', {
     header: 'Category',
@@ -53,7 +73,7 @@ const columns = [
   }),
 ];
 
-const TransactionsUploadTable = ({ transactions, setTransactions, containerClassName = "", tableScrollClassName = "" }: TransactionsUploadTableProps) => {
+const TransactionsUploadTable = ({ transactions, setTransactions }: TransactionsUploadTableProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -133,6 +153,7 @@ const TransactionsUploadTable = ({ transactions, setTransactions, containerClass
           value={globalFilter}
           onChange={e => setGlobalFilter(e.target.value)}
           placeholder="Filter transactions..."
+          aria-label="Filter transactions"
           className="w-full max-w-xs px-3 py-2 rounded border border-primary bg-gray-900 text-white"
         />
       </div>
@@ -163,17 +184,33 @@ const TransactionsUploadTable = ({ transactions, setTransactions, containerClass
                           case "currency": widthClass = "w-24"; break;
                           default: widthClass = "";
                         }
+                        const isSortable = header.column.getCanSort();
                         return (
                           <th
                             key={header.id}
-                            className={["p-2 border-1 cursor-pointer select-none", widthClass].join(" ")}
-                            onClick={header.column.getCanSort() ? () => header.column.toggleSorting() : undefined}
+                            className={["p-2 border-1 select-none", widthClass].join(" ")}
                           >
-                            {header.isPlaceholder ? null : header.column.columnDef.header}
-                            {header.column.getCanSort() && (
-                              <span className="ml-2 text-xs">
-                                {header.column.getIsSorted() === 'asc' ? '▲' : header.column.getIsSorted() === 'desc' ? '▼' : ''}
-                              </span>
+                            {header.isPlaceholder ? null : (
+                              isSortable ? (
+                                <button
+                                  type="button"
+                                  className="inline-flex items-center w-full cursor-pointer text-left"
+                                  onClick={() => header.column.toggleSorting()}
+                                >
+                                  {header.column.columnDef.header}
+                                  <span className="ml-2 text-xs">
+                                    {header.column.getIsSorted() === 'asc'
+                                      ? '▲'
+                                      : header.column.getIsSorted() === 'desc'
+                                        ? '▼'
+                                        : ''}
+                                  </span>
+                                </button>
+                              ) : (
+                                <span className="inline-flex items-center w-full">
+                                  {header.column.columnDef.header}
+                                </span>
+                              )
                             )}
                           </th>
                         );
@@ -252,7 +289,7 @@ const TransactionsUploadTable = ({ transactions, setTransactions, containerClass
             </div>
           </div>
         )}
-    </Card >
+    </Card>
   );
 }
 
