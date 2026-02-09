@@ -6,18 +6,12 @@ import {
   getCoreRowModel,
   getFilteredRowModel,
   getSortedRowModel,
+  SortingState,
   useReactTable,
 } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import React, { useRef, useState } from "react";
 import { useImportCsvMutation } from "../queries/useImportCsvMutation";
-
-
-interface TransactionsUploadTableProps {
-  transactions: Transaction[];
-  setTransactions: React.Dispatch<React.SetStateAction<Transaction[]>>;
-}
-
 
 interface TransactionsUploadTableProps {
   transactions: Transaction[];
@@ -62,7 +56,7 @@ const columns = [
 const TransactionsUploadTable = ({ transactions, setTransactions, containerClassName = "", tableScrollClassName = "" }: TransactionsUploadTableProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [sorting, setSorting] = useState([]);
+  const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
 
   const importCsvMutation = useImportCsvMutation({
