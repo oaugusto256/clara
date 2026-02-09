@@ -295,7 +295,7 @@ const TransactionsUploadTable = ({ transactions, setTransactions }: Transactions
             </div>
           </div>
         )}
-    </Card >
+    </Card>
   );
 }
 
