@@ -1,3 +1,4 @@
+export { categorizeTransactions, SimpleTransaction } from './groupTransactions';
 import { RecommendationSchema, Recommendation as SharedRecommendation } from '@clara/schemas';
 
 // Minimal rules-engine entry to satisfy workspace boundaries

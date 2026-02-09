@@ -39,6 +39,7 @@ export const TransactionSchema = z.object({
   date: z.string(),
   postedAt: z.string().optional(),
   categoryId: z.string().optional(),
+  categoryKey: z.string().optional(),
   source: z.union([z.literal('csv'), z.literal('ofx'), z.literal('open_finance_mock'), z.literal('open_finance_real')]),
   metadata: z.record(z.unknown()).optional(),
 });
@@ -93,6 +94,7 @@ export const NormalizedTransactionInputSchema = z.object({
   amount: z.number(),
   currency: z.string(),
   date: z.string(),
+  categoryKey: z.string().optional(),
 });
 
 export const DEFAULT_CATEGORY_KEYS = [

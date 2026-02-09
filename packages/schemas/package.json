@@ -12,7 +12,8 @@
 		}
 	},
 	"scripts": {
-		"build": "tsc -p tsconfig.json",
+		"build": "tsc -p tsconfig.json && pnpm run generate-json-schemas",
+		"generate-json-schemas": "ts-node scripts/generate-json-schemas.ts",
 		"lint": "biome check",
 		"format": "biome format \"src/**/*.{ts,tsx,js,json,md}\"",
 		"test": "vitest",
@@ -22,6 +23,7 @@
 		"zod": "^3.23.0"
 	},
 	"devDependencies": {
+		"@types/node": "^20.0.0",
 		"uuid": "^9.0.0"
 	}
 }

@@ -1,20 +1,15 @@
-import api from "@/api";
 import type { Transaction } from "@clara/schemas";
-import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
+import { useImportCsvMutation } from "../queries/useImportCsvMutation";
 
 const TransactionsUploadTable = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const importCsvMutation = useMutation({
-    mutationFn: async (csvText: string) => {
-      const res = await api.post("/import/csv", csvText, {
-        headers: { "Content-Type": "text/csv" },
-      });
-      return res.data;
-    },
+  console.log(transactions)
+
+  const importCsvMutation = useImportCsvMutation({
     onSuccess: (data) => {
       setTransactions(data.normalized || []);
       setError(null);
@@ -69,7 +64,7 @@ const TransactionsUploadTable = () => {
                   <th className="px-6 py-4 font-semibold text-white">Date</th>
                   <th className="px-6 py-4 font-semibold text-white">Description</th>
                   <th className="px-6 py-4 font-semibold text-white">Amount</th>
-                  <th className="px-6 py-4 font-semibold text-white">Direction</th>
+                  <th className="px-6 py-4 font-semibold text-white">Category</th>
                   <th className="px-6 py-4 font-semibold text-white">Currency</th>
                 </tr>
               </thead>
@@ -91,7 +86,7 @@ const TransactionsUploadTable = () => {
                           : ''}
                       </td>
                       <td className="px-6 py-4">
-                        {tx.direction}
+                        {tx.categoryKey}
                       </td>
                       <td className="px-6 py-4">
                         {tx.amount && typeof tx.amount.currency === 'string' ? tx.amount.currency : ''}

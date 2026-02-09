@@ -22,6 +22,7 @@ export function normalizeInput(input: NormalizedTransactionInput): Transaction {
     amount: { amount: Math.round(input.amount), currency: input.currency },
     direction: 'expense',
     date: input.date,
+    categoryKey: input.categoryKey,
     source: 'csv',
   };
 

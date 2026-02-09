@@ -47,6 +47,7 @@ export type Transaction = {
   postedAt?: string; // ISO date
 
   categoryId?: string;
+  categoryKey?: string; // e.g. "food", "transport" — denormalized for convenience
   source: 'csv' | 'ofx' | 'open_finance_mock' | 'open_finance_real';
 
   metadata?: Record<string, unknown>;
@@ -102,6 +103,7 @@ export type NormalizedTransactionInput = {
   amount: number;
   currency: string;
   date: string; // ISO date
+  categoryKey?: string;
 };
 
 

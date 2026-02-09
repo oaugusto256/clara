@@ -47,6 +47,9 @@
     "categoryId": {
       "type": "string"
     },
+    "categoryKey": {
+      "type": "string"
+    },
     "source": {
       "type": "string",
       "enum": [

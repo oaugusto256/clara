@@ -15,6 +15,9 @@
     },
     "date": {
       "type": "string"
+    },
+    "categoryKey": {
+      "type": "string"
     }
   },
   "required": [

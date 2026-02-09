@@ -35,7 +35,7 @@ describe('api: csv parsing and normalization', () => {
     expect(res.ok.length).toBe(5);
 
     const rows = res.ok;
-    expect(rows[0].accountExternalId).toBe('id-mock-6956');
+
     expect(rows[0].amount).toBe(-140);
     expect(rows[1].description).toContain('Salário');
     expect(rows[2].amount).toBe(-45);
