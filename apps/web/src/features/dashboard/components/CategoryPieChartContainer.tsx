@@ -7,8 +7,6 @@ interface CategoryPieChartContainerProps {
 }
 
 export function CategoryPieChartContainer({ transactions }: CategoryPieChartContainerProps) {
-  console.log(transactions)
-
   // Aggregate totals by categoryKey
   const data = useMemo(() => {
     const totals: Record<string, number> = {};

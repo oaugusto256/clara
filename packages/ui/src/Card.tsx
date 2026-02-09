@@ -10,10 +10,8 @@ export interface CardProps {
  * Use for dashboard widgets, tables, charts, etc.
  */
 const Card = ({ children, className = "" }: CardProps) => (
-  <div
-    className={`bg-gray-800 rounded-lg px-4 py-4 shadow border border-gray-700 ${className}`}
-  >
-    {children}
+  <div className={`card bg-base-100 rounded-md shadow-md ${className}`}>
+    <div className="card-body p-4">{children}</div>
   </div>
 );
 

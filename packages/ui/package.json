@@ -15,5 +15,8 @@
 		"build": "tsc -p tsconfig.json",
 		"lint": "biome check",
 		"format": "biome format \"src/**/*.{ts,tsx,js,json,md}\""
+	},
+	"dependencies": {
+		"daisyui": "^5.5.18"
 	}
 }
