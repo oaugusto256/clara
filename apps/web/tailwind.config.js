@@ -14,5 +14,9 @@ module.exports = {
   theme: {
     ...claraTheme.theme,
   },
-  plugins: [],
+  darkMode: 'class',
+  plugins: [require('daisyui')],
+  daisyui: {
+    themes: ["business", "autumn"],
+  },
 };

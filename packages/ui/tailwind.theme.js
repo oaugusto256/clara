@@ -3,6 +3,7 @@
 
 /** @type {import('tailwindcss').Config} */
 const claraTheme = {
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -26,6 +27,10 @@ const claraTheme = {
         lg: '1rem',
       },
     },
+  },
+  plugins: [require('daisyui')],
+  daisyui: {
+    themes: ["light", "business", "dark"], // light is first, so it's default
   },
 };
 module.exports = { claraTheme };

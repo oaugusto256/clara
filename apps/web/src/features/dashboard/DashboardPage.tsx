@@ -13,7 +13,7 @@ export default function DashboardPage() {
 
   return (
     <DashboardLayout>
-      <div className="flex flex-col md:flex-row gap-4 mb-8 w-full min-h-0" style={{ height: 'calc(100vh - 5rem)' }}>
+      <div className="flex gap-4 h-full">
         <div className="flex-2 flex flex-col min-h-0">
           <TransactionsUploadTable
             transactions={transactions}
@@ -22,7 +22,7 @@ export default function DashboardPage() {
             tableScrollClassName="flex-1 overflow-y-auto min-h-0 max-h-full"
           />
         </div>
-        <div className="flex-1 flex flex-col items-center min-h-0">
+        <div className="flex-1 flex flex-col min-h-0">
           <div className="w-full min-h-0">
             <CategoryPieChartContainer transactions={transactions} />
           </div>
