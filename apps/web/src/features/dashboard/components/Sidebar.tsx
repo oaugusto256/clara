@@ -7,7 +7,7 @@ export interface SidebarProps {
 }
 
 export const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => (
-  <aside className={`navbar bg-base-100 shadow-sm shadow-gray-700 z-10 transition-all duration-300 flex flex-col min-h-screen ${sidebarOpen ? "w-44" : "w-16"}`}>
+  <aside className={`navbar bg-base-300 shadow-sm z-10 transition-all duration-300 flex flex-col min-h-screen ${sidebarOpen ? "w-44" : "w-16"}`}>
     <div className="navbar-start flex items-center w-full my-4">
       <span className="text-2xl font-bold text-base-content text-center w-full">{sidebarOpen ? "Clara" : "C"}</span>
     </div>

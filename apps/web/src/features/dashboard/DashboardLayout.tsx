@@ -23,7 +23,7 @@ export default function DashboardLayout({ children }: { children?: React.ReactNo
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
       <div className="flex-1 flex flex-col relative overflow-visible">
         <Navbar />
-        <main className="flex-1 w-full h-full p-4 transition-all duration-300 bg-zinc-200">
+        <main className="flex-1 w-full h-full p-4 transition-all duration-300 bg-base-100">
           {children}
         </main>
       </div>

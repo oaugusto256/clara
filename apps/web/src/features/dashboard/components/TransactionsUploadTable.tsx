@@ -163,8 +163,8 @@ const TransactionsUploadTable = ({ transactions, setTransactions }: Transactions
               ref={tableContainerRef}
               className="overflow-y-auto max-h-[calc(100vh-260px)] w-full"
             >
-              <table className="table table-zebra table-xs min-w-full w-full text-left border-x border-primary shadow-lg table-fixed">
-                <thead className="bg-base-300 sticky top-0 z-20 text-base-content text-md font-semibold tracking-wide">
+              <table className="table table-zebra table-xs min-w-full w-full text-left border-x border-base-100 table-fixed">
+                <thead className="bg-base-300 sticky top-0 z-20 text-base-content text-md font-semibold">
                   {table.getHeaderGroups().map(headerGroup => (
                     <tr key={headerGroup.id}>
                       {headerGroup.headers.map(header => {
@@ -181,7 +181,7 @@ const TransactionsUploadTable = ({ transactions, setTransactions }: Transactions
                         return (
                           <th
                             key={header.id}
-                            className={["p-2 border select-none bg-base-300 border-b border-primary sticky top-0 z-30", widthClass].join(" ")}
+                            className={["p-2 select-none bg-base-300 border-1 border-base-100 sticky top-0 z-30", widthClass].join(" ")}
                           >
                             {header.isPlaceholder ? null : (
                               isSortable ? (
@@ -236,7 +236,7 @@ const TransactionsUploadTable = ({ transactions, setTransactions }: Transactions
                         return (
                           <tr
                             key={row.id}
-                            className="border-t border-primary last:border-b hover:bg-primary/10 transition-colors w-full text-base font-medium"
+                            className="border-base-100 last:border-b hover:bg-primary/10 transition-colors w-full text-base font-medium"
                             style={{ height: `${virtualRow.size}px` }}
                           >
                             {row.getVisibleCells().map(cell => {
@@ -253,7 +253,7 @@ const TransactionsUploadTable = ({ transactions, setTransactions }: Transactions
                               return (
                                 <td
                                   key={cell.id}
-                                  className={["px-2 py-4 text-sm whitespace-nowrap", widthClass, extraClass].join(" ")}
+                                  className={["px-2 py-2 text-sm whitespace-nowrap text-gray-300 font-light", widthClass, extraClass].join(" ")}
                                 >
                                   {cell.renderValue()}
                                 </td>
