@@ -4,11 +4,11 @@ import { FaMoon, FaSun, FaUserCircle } from "react-icons/fa";
 
 export const Navbar = () => {
   const [theme, setTheme] = useState(() => {
-    return document.documentElement.getAttribute('data-theme') || 'autumn';
+    return document.documentElement.getAttribute('data-theme') || 'dark';
   });
 
   const toggleTheme = useCallback(() => {
-    const newTheme = theme === 'business' ? 'night' : 'business';
+    const newTheme = theme === 'business' ? 'dark' : 'business';
     document.documentElement.setAttribute('data-theme', newTheme);
     setTheme(newTheme);
   }, [theme]);
