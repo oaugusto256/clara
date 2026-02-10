@@ -35,43 +35,45 @@ export function CategoryPieChart({ data }: CategoryPieChartProps) {
   const total = data.reduce((sum, d) => sum + d.total, 0);
   return (
     <Card>
-      <h2 className="card-title text-lg mb-4 text-base-content">Spending by Category</h2>
-      {data.length === 0 ? (
-        <div className="text-base-content text-sm">No data to display.</div>
-      ) : (
-        <>
-          {total > 0 && (
-            <div className="text-sm text-gray-400">Total: <span className="text-md font-bold text-gray-200">{total.toLocaleString(undefined, { style: 'currency', currency: 'BRL' })}</span></div>
-          )}
-          <ResponsiveContainer width="100%" height={320}>
-            <PieChart width={320} height={320}>
-              <Pie
-                data={data}
-                dataKey="total"
-                nameKey="categoryKey"
-                cx="50%"
-                cy="50%"
-                outerRadius={110}
-                label={({ name, percent }) =>
-                  `${name}: ${percent !== undefined ? (percent * 100).toFixed(0) : 0}%`
-                }
-              >
-                {data.map((entry, idx) => (
-                  <Cell key={`cell-${entry.categoryKey}`} fill={COLORS[idx % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip
-                formatter={(value) =>
-                  typeof value === 'number'
-                    ? value.toLocaleString(undefined, { style: 'currency', currency: 'BRL' })
-                    : ''
-                }
-              />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
-        </>
-      )}
+      <div className="flex flex-col gap-2">
+        <h2 className="card-title text-base-content">Spending by Category</h2>
+        {data.length === 0 ? (
+          <div className="text-base-content text-sm">No data to display.</div>
+        ) : (
+          <>
+            {total > 0 && (
+              <div className="text-sm text-gray-400">Total: <span className="text-md font-bold text-gray-200">{total.toLocaleString(undefined, { style: 'currency', currency: 'BRL' })}</span></div>
+            )}
+            <ResponsiveContainer width="100%" height={320}>
+              <PieChart width={320} height={320}>
+                <Pie
+                  data={data}
+                  dataKey="total"
+                  nameKey="categoryKey"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={110}
+                  label={({ name, percent }) =>
+                    `${name}: ${percent !== undefined ? (percent * 100).toFixed(0) : 0}%`
+                  }
+                >
+                  {data.map((entry, idx) => (
+                    <Cell key={`cell-${entry.categoryKey}`} fill={COLORS[idx % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip
+                  formatter={(value) =>
+                    typeof value === 'number'
+                      ? value.toLocaleString(undefined, { style: 'currency', currency: 'BRL' })
+                      : ''
+                  }
+                />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          </>
+        )}
+      </div>
     </Card>
   );
 }

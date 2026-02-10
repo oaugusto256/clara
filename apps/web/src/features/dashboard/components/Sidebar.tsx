@@ -19,7 +19,7 @@ export const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => (
     </ul>
     <div className="flex flex-col">
       <button
-        className="btn btn-secondary btn-sm mx-auto mb-2"
+        className="btn btn-secondary btn-xs mx-auto mb-2"
         title={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
         onClick={() => setSidebarOpen(!sidebarOpen)}
       >

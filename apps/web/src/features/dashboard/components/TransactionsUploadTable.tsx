@@ -134,7 +134,7 @@ const TransactionsUploadTable = ({ transactions, setTransactions }: Transactions
   return (
     <Card>
       <div className="flex flex-col gap-4">
-        <h2 className="text-lg font-semibold text-base-content">All Transactions</h2>
+        <h2 className="card-title text-base-content">All Transactions</h2>
         <div className="flex justify-between w-full gap-4">
           <input
             type="text"
