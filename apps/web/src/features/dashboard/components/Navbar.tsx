@@ -14,7 +14,7 @@ export const Navbar = () => {
   }, [theme]);
 
   return (
-    <div className="navbar bg-base-100 shadow-lg shadow-b-gray-700 z-10">
+    <div className="navbar bg-base-100 shadow-lg z-10">
       <div className="navbar-start" />
       <div className="navbar-end">
         <div className="dropdown dropdown-end flex gap-2">
