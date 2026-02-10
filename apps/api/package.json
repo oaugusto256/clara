@@ -3,7 +3,11 @@
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
+		"db:generate": "dotenv -e .env -- drizzle-kit generate --config=drizzle.config.ts",
+		"db:migrate": "dotenv -e .env -- drizzle-kit push --config=drizzle.config.ts",
+		"db:studio": "dotenv -e .env -- drizzle-kit studio --config=drizzle.config.ts",
 		"dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+		"dev:all": "docker-compose -f ../../devops/docker/docker-compose.dev.yml up -d && pnpm run dev",
 		"start": "node dist/index.js",
 		"build": "tsc -p tsconfig.json && pnpm run copy-schemas",
 		"copy-schemas": "mkdir -p dist/generated-schemas && cp src/generated-schemas/*.json dist/generated-schemas/",
@@ -14,20 +18,24 @@
 		"test:coverage": "vitest run --coverage"
 	},
 	"dependencies": {
-		"@clara/schemas": "workspace:*",
 		"@clara/rules-engine": "workspace:*",
+		"@clara/schemas": "workspace:*",
 		"@fastify/cors": "^11.2.0",
 		"@fastify/static": "^9.0.0",
 		"@fastify/swagger": "^9.6.1",
 		"@fastify/swagger-ui": "^5.2.5",
+		"@types/pg": "^8.16.0",
+		"drizzle-orm": "^0.45.1",
 		"fastify": "^5.7.2",
 		"fastify-plugin": "^5.1.0",
-		"zod-to-json-schema": "^3.25.1",
-		"uuid": "^9.0.0"
+		"pg": "^8.18.0",
+		"uuid": "^9.0.0",
+		"zod-to-json-schema": "^3.25.1"
 	},
 	"devDependencies": {
+		"@vitest/coverage-v8": "^1.2.0",
 		"concurrently": "^9.2.1",
-		"ts-node-dev": "^2.0.0",
-		"@vitest/coverage-v8": "^1.2.0"
+		"drizzle-kit": "^0.31.9",
+		"ts-node-dev": "^2.0.0"
 	}
 }

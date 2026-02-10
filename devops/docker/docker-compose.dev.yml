@@ -1,0 +1,46 @@
+services:
+  api:
+    build:
+      context: ../..
+      dockerfile: devops/docker/api/Dockerfile.dev
+    container_name: clara_api_dev
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://root:root@db:5432/clara
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ../../apps/api:/app/apps/api
+      - ../../packages:/app/packages
+    networks:
+    - clara-network
+
+  db:
+    image: postgres:16-alpine
+    container_name: clara_postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: clara
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - clara-network
+
+volumes:
+  postgres_data:
+  postgres_data_dev:
+
+networks:
+  clara-network:
+    driver: bridge
