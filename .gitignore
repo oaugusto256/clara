@@ -16,3 +16,6 @@ coverage/
 **/src/**/*.d.ts
 !apps/api/src/types/uuid.d.ts
 !apps/api/src/generated-schemas/*.d.ts
+
+# Ignore environment variables for Docker
+.env.docker

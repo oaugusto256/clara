@@ -6,6 +6,9 @@
 		"db:generate": "dotenv -e .env -- drizzle-kit generate --config=drizzle.config.ts",
 		"db:migrate": "dotenv -e .env -- drizzle-kit push --config=drizzle.config.ts",
 		"db:studio": "dotenv -e .env -- drizzle-kit studio --config=drizzle.config.ts",
+		"db:generate:docker": "dotenv -e .env.docker -- drizzle-kit generate --config=drizzle.config.ts",
+		"db:migrate:docker": "dotenv -e .env.docker -- drizzle-kit push --config=drizzle.config.ts",
+		"db:studio:docker": "dotenv -e .env.docker -- drizzle-kit studio --config=drizzle.config.ts",
 		"dev": "ts-node-dev --respawn --transpile-only src/index.ts",
 		"dev:all": "docker-compose -f ../../devops/docker/docker-compose.dev.yml up -d",
 		"start": "node dist/index.js",
@@ -29,6 +32,7 @@
 		"fastify": "^5.7.2",
 		"fastify-plugin": "^5.1.0",
 		"pg": "^8.18.0",
+		"dotenv-cli": "^8.0.0",
 		"uuid": "^9.0.0",
 		"zod-to-json-schema": "^3.25.1"
 	},

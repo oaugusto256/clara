@@ -22,17 +22,24 @@ import { categorizeTransactions, SimpleTransaction } from '@clara/rules-engine';
 import { NormalizedTransactionInputSchema, type NormalizedTransactionInput } from '@clara/schemas';
 import { parseAmountString, parseDateString } from './utils/helpers';
 import { detectDelimiter, normalizeHeaderName, parseCSVLine } from './utils/parserUtils';
+import { db } from '../db/client';
+import { keywordCategoryMap } from '../db/keywordCategoryMap.schema';
 
 export type ParseResult = {
   ok: NormalizedTransactionInput[];
   errors: { line: number; reason: string }[];
 };
 
-/**
- * Very small CSV parser for the MVP: expects header row and columns:
- * accountExternalId,description,amount,currency,date
- */
-export function parseCsv(raw: string): ParseResult {
+async function getKeywordCategoryMap(): Promise<Record<string, string>> {
+  const rows = await db.select().from(keywordCategoryMap);
+  return Object.fromEntries(rows.map(row => [row.keyword, row.category]));
+}
+
+async function saveKeywordCategory(keyword: string) {
+  await db.insert(keywordCategoryMap).values({ keyword, category: 'other' }).onConflictDoNothing();
+}
+
+export async function parseCsv(raw: string): Promise<ParseResult> {
   const lines = raw.trim().split(/\r?\n/);
   const result: ParseResult = { ok: [], errors: [] };
 
@@ -73,10 +80,7 @@ export function parseCsv(raw: string): ParseResult {
       else obj[key] = raw;
     }
 
-    // default currency if not provided
     if (!obj.currency) obj.currency = 'BRL';
-
-    // Only push if required keys are present
     if (obj.date && obj.description && typeof obj.amount === 'number') {
       simpleTxs.push({
         date: obj.date,
@@ -86,10 +90,19 @@ export function parseCsv(raw: string): ParseResult {
     }
   }
 
-  // Categorize transactions
-  const categorized = categorizeTransactions(simpleTxs);
+  // Fetch and update keyword-category map
+  let keywordCategoryMapDb = await getKeywordCategoryMap();
+  for (const tx of simpleTxs) {
+    const keyword = tx.title.toLowerCase();
+    if (!keywordCategoryMapDb[keyword]) {
+      await saveKeywordCategory(keyword);
+      keywordCategoryMapDb[keyword] = 'other';
+    }
+  }
 
-  // Now validate and push to result.ok
+  // Categorize transactions
+  const categorized = categorizeTransactions(simpleTxs, keywordCategoryMapDb);
+
   for (const tx of categorized) {
     const obj = {
       date: tx.date,

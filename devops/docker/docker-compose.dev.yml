@@ -1,4 +1,18 @@
 services:
+  migrate:
+    build:
+      context: ../..
+      dockerfile: devops/docker/api/Dockerfile.dev
+    container_name: clara_migrate
+    env_file:
+      - ../../.env.docker
+    depends_on:
+      db:
+        condition: service_healthy
+    working_dir: /app/apps/api
+    command: pnpm run db:migrate:docker
+    networks:
+      - clara-network
   api:
     build:
       context: ../..
@@ -6,8 +20,8 @@ services:
     container_name: clara_api_dev
     ports:
       - "3000:3000"
-    environment:
-      DATABASE_URL: postgresql://root:root@localhost:5432/clara
+    env_file:
+      - ../../.env.docker
     depends_on:
       db:
         condition: service_healthy
@@ -29,7 +43,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U root"]
+      test: ["CMD-SHELL", "pg_isready -U root -d clara"]
       interval: 5s
       timeout: 5s
       retries: 5

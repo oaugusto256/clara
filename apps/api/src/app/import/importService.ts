@@ -7,8 +7,8 @@ export type ImportResult = {
   errors: { line: number; reason: string }[];
 };
 
-export function importCsv(csv: string): ImportResult {
-  const parsed = parseCsv(csv);
+export async function importCsv(csv: string): Promise<ImportResult> {
+  const parsed = await parseCsv(csv);
 
   const normalized: any[] = [];
   const normalizationErrors: { line: number; reason: string }[] = [];
