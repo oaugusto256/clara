@@ -7,7 +7,7 @@
 		"db:migrate": "dotenv -e .env -- drizzle-kit push --config=drizzle.config.ts",
 		"db:studio": "dotenv -e .env -- drizzle-kit studio --config=drizzle.config.ts",
 		"dev": "ts-node-dev --respawn --transpile-only src/index.ts",
-		"dev:all": "docker-compose -f ../../devops/docker/docker-compose.dev.yml up -d && pnpm run dev",
+		"dev:all": "docker-compose -f ../../devops/docker/docker-compose.dev.yml up -d",
 		"start": "node dist/index.js",
 		"build": "tsc -p tsconfig.json && pnpm run copy-schemas",
 		"copy-schemas": "mkdir -p dist/generated-schemas && cp src/generated-schemas/*.json dist/generated-schemas/",
