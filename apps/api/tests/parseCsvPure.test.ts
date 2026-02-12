@@ -16,7 +16,7 @@ describe('parseCsvPure', () => {
 
   it('returns error for missing required columns', () => {
     const csv = `foo,bar\n1,2`;
-    const { transactions, uniqueKeywords, errors } = parseCsvPure(csv);
+    const { transactions, errors } = parseCsvPure(csv);
     expect(transactions.length).toBe(0);
     expect(errors.length).toBeGreaterThan(0);
   });
