@@ -6,9 +6,9 @@ WORKDIR /app
 RUN npm install -g pnpm
 
 # Copy only package files for install step
-COPY ../../../../pnpm-workspace.yaml ../../../../pnpm-lock.yaml ./
-COPY ../../../../packages ./packages
-COPY ../../../../apps/api ./apps/api
+COPY pnpm-workspace.yaml pnpm-lock.yaml ./
+COPY packages ./packages
+COPY apps/api ./apps/api
 
 WORKDIR /app/apps/api
 RUN pnpm install --filter @clara/api...
