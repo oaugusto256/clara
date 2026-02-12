@@ -32,6 +32,14 @@ export type ParseResult = {
 
 export async function getKeywordCategoryMap(): Promise<Record<string, string>> {
   const rows = await db.select().from(keywordCategoryMap);
+  // Ensure deterministic ordering for substring-based categorization:
+  // - Longer keywords first (more specific matches take precedence)
+  // - Then lexicographically for stable tie-breaking
+  rows.sort((a, b) => {
+    const lengthDiff = b.keyword.length - a.keyword.length;
+    if (lengthDiff !== 0) return lengthDiff;
+    return a.keyword.localeCompare(b.keyword);
+  });
   return Object.fromEntries(rows.map(row => [row.keyword, row.category]));
 }
 
