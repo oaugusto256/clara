@@ -17,7 +17,7 @@
 		"lint": "biome check",
 		"format": "biome format \"**/*.{ts,tsx,js,json,md}\"",
 		"test": "vitest",
-		"test:ci": "pnpm -w -F @clara/schemas build && vitest run --reporter verbose",
+		"test:ci": "cd ../../packages/schemas && pnpm run build && cd ../rules-engine && pnpm run build && cd ../../apps/api && vitest run --reporter verbose",
 		"test:coverage": "vitest run --coverage"
 	},
 	"dependencies": {

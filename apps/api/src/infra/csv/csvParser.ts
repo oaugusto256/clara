@@ -20,52 +20,49 @@ const known: Record<string, string> = {
 };
 import { categorizeTransactions, SimpleTransaction } from '@clara/rules-engine';
 import { NormalizedTransactionInputSchema, type NormalizedTransactionInput } from '@clara/schemas';
-import { parseAmountString, parseDateString } from './utils/helpers';
-import { detectDelimiter, normalizeHeaderName, parseCSVLine } from './utils/parserUtils';
 import { db } from '../db/client';
 import { keywordCategoryMap } from '../db/keywordCategoryMap.schema';
+import { parseAmountString, parseDateString } from './utils/helpers';
+import { detectDelimiter, normalizeHeaderName, parseCSVLine } from './utils/parserUtils';
 
 export type ParseResult = {
   ok: NormalizedTransactionInput[];
   errors: { line: number; reason: string }[];
 };
 
-async function getKeywordCategoryMap(): Promise<Record<string, string>> {
+export async function getKeywordCategoryMap(): Promise<Record<string, string>> {
   const rows = await db.select().from(keywordCategoryMap);
   return Object.fromEntries(rows.map(row => [row.keyword, row.category]));
 }
 
-async function saveKeywordCategory(keyword: string) {
+export async function saveKeywordCategory(keyword: string) {
   await db.insert(keywordCategoryMap).values({ keyword, category: 'other' }).onConflictDoNothing();
 }
 
-export async function parseCsv(raw: string): Promise<ParseResult> {
+
+// Pure CSV parsing: returns transactions and unique keywords
+export function parseCsvPure(raw: string): { transactions: SimpleTransaction[]; uniqueKeywords: string[]; errors: { line: number; reason: string }[] } {
   const lines = raw.trim().split(/\r?\n/);
-  const result: ParseResult = { ok: [], errors: [] };
+  const errors: { line: number; reason: string }[] = [];
+  if (lines.length === 0) return { transactions: [], uniqueKeywords: [], errors };
 
-  if (lines.length === 0) return result;
-
-  // Parse header robustly and map to canonical keys
   const headerLine = lines[0];
   const delimiter = detectDelimiter(headerLine);
   const rawHeaders = parseCSVLine(headerLine, delimiter);
-  const headerMap: Record<number, string> = {}
-
+  const headerMap: Record<number, string> = {};
   rawHeaders.forEach((h, i) => {
     const n = normalizeHeaderName(h).replace(/[^a-z0-9]/g, '');
     if (known[n]) headerMap[i] = known[n];
   });
-
-  // Require only canonical keys after mapping
   const requiredKeys = ['date', 'description', 'amount'];
   const mappedKeys = new Set(Object.values(headerMap));
   const hasRequired = requiredKeys.every((k) => mappedKeys.has(k));
   if (!hasRequired) {
-    result.errors.push({ line: 0, reason: 'Invalid header - missing required columns' });
-    return result;
+    errors.push({ line: 0, reason: 'Invalid header - missing required columns' });
+    return { transactions: [], uniqueKeywords: [], errors };
   }
-
   const simpleTxs: SimpleTransaction[] = [];
+  const keywordSet = new Set<string>();
   for (let i = 1; i < lines.length; i++) {
     const ln = lines[i];
     if (!ln.trim()) continue;
@@ -87,22 +84,30 @@ export async function parseCsv(raw: string): Promise<ParseResult> {
         title: obj.description,
         amount: obj.amount,
       });
+      keywordSet.add(obj.description.toLowerCase());
     }
   }
+  return { transactions: simpleTxs, uniqueKeywords: Array.from(keywordSet), errors };
+}
 
-  // Fetch and update keyword-category map
+// Main orchestrator: handles DB, categorization, and validation
+export async function parseCsv(raw: string): Promise<ParseResult> {
+  const { transactions, uniqueKeywords, errors } = parseCsvPure(raw);
+  const result: ParseResult = { ok: [], errors: [...errors] };
+  if (transactions.length === 0) return result;
+
+  // Batch fetch keyword-category map
   let keywordCategoryMapDb = await getKeywordCategoryMap();
-  for (const tx of simpleTxs) {
-    const keyword = tx.title.toLowerCase();
-    if (!keywordCategoryMapDb[keyword]) {
-      await saveKeywordCategory(keyword);
-      keywordCategoryMapDb[keyword] = 'other';
-    }
+  // Save new keywords in batch
+  const newKeywords = uniqueKeywords.filter(k => !(k in keywordCategoryMapDb));
+  if (newKeywords.length) {
+    await Promise.all(newKeywords.map(saveKeywordCategory));
+    // Add to map for categorization
+    for (const k of newKeywords) keywordCategoryMapDb[k] = 'other';
   }
 
-  // Categorize transactions
-  const categorized = categorizeTransactions(simpleTxs, keywordCategoryMapDb);
-
+  // Categorize
+  const categorized = categorizeTransactions(transactions, keywordCategoryMapDb);
   for (const tx of categorized) {
     const obj = {
       date: tx.date,
@@ -118,6 +123,5 @@ export async function parseCsv(raw: string): Promise<ParseResult> {
       result.errors.push({ reason: err?.message ?? 'validation failed', line: 0 });
     }
   }
-
   return result;
 }
