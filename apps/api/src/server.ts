@@ -4,9 +4,10 @@ import fastifySwaggerUi from '@fastify/swagger-ui';
 import type { FastifyInstance } from 'fastify';
 import Fastify from 'fastify';
 import { importCsvRoute } from './http/routes/import';
+import { keywordCategoryRoutes } from './http/routes/keywordCategory';
 
 export function createServer(): FastifyInstance {
-  const app = Fastify({ logger: false });
+  const app = Fastify({ logger: true });
 
   // Register CORS for local dev
   app.register(fastifyCors, {
@@ -86,8 +87,8 @@ export function createServer(): FastifyInstance {
     },
   });
 
-  // Register routes AFTER Swagger
   app.register(importCsvRoute);
+  app.register(keywordCategoryRoutes);
 
   // Register Swagger UI
   app.register(fastifySwaggerUi, {

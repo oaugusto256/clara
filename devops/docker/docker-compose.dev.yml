@@ -1,0 +1,59 @@
+services:
+  migrate:
+    build:
+      context: ../..
+      dockerfile: devops/docker/api/Dockerfile.dev
+    container_name: clara_migrate
+    env_file:
+      - ../../.env.docker
+    depends_on:
+      db:
+        condition: service_healthy
+    working_dir: /app/apps/api
+    command: pnpm run db:migrate:docker
+    networks:
+      - clara-network
+  api:
+    build:
+      context: ../..
+      dockerfile: devops/docker/api/Dockerfile.dev
+    container_name: clara_api_dev
+    ports:
+      - "3000:3000"
+    env_file:
+      - ../../.env.docker
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ../../packages:/app/packages
+    networks:
+      - clara-network
+
+  db:
+    image: postgres:16-alpine
+    container_name: clara_postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: clara
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root -d clara"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - clara-network
+
+volumes:
+  postgres_data:
+  postgres_data_dev:
+
+networks:
+  clara-network:
+    driver: bridge

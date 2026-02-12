@@ -1,0 +1,46 @@
+# Development Dockerfile for Clara API
+
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copy monorepo root files
+COPY package.json ./
+COPY pnpm-lock.yaml ./
+COPY pnpm-workspace.yaml ./
+COPY tsconfig.json ./tsconfig.json
+
+## Copy all workspace package.json, tsconfig.json, and required src/scripts dirs for dependency install
+COPY apps/api/package.json ./apps/api/package.json
+COPY apps/api/tsconfig.json ./apps/api/tsconfig.json
+COPY apps/api/drizzle.config.ts ./apps/api/drizzle.config.ts
+COPY packages/schemas/package.json ./packages/schemas/package.json
+COPY packages/schemas/tsconfig.json ./packages/schemas/tsconfig.json
+COPY packages/schemas/src ./packages/schemas/src
+COPY packages/schemas/scripts ./packages/schemas/scripts
+COPY packages/rules-engine/package.json ./packages/rules-engine/package.json
+COPY packages/rules-engine/tsconfig.json ./packages/rules-engine/tsconfig.json
+COPY packages/rules-engine/src ./packages/rules-engine/src
+COPY packages/ui/package.json ./packages/ui/package.json
+COPY packages/ui/tsconfig.json ./packages/ui/tsconfig.json
+COPY packages/ui/src ./packages/ui/src
+
+# Install dependencies after copying only package.json files (for better cache)
+COPY .env.docker ./apps/api/.env.docker
+RUN npm install -g pnpm@8.15.4
+RUN pnpm install
+
+# Now copy the rest of the source code
+COPY packages/schemas ./packages/schemas
+COPY packages/rules-engine ./packages/rules-engine
+COPY packages/ui ./packages/ui
+
+# Expose port
+EXPOSE 3000
+
+# Copy API source code before starting dev server
+COPY apps/api/src ./apps/api/src
+
+# Set working directory to API package before starting dev server
+WORKDIR /app/apps/api
+CMD ["pnpm", "run", "dev"]

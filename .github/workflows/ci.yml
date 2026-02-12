@@ -5,6 +5,17 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: root
+          POSTGRES_DB: clara
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U root -d clara" --health-interval 5s --health-timeout 5s --health-retries 5
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node
@@ -17,9 +28,21 @@ jobs:
           version: latest
       - name: Install
         run: pnpm install
+      - name: Wait for Postgres
+        run: |
+          for i in {1..10}; do
+            pg_isready -h localhost -U root -d clara && break
+            sleep 2
+          done
+      - name: Migrate DB
+        run: pnpm --filter @clara/api run db:migrate
+        env:
+          DATABASE_URL: postgresql://root:root@localhost:5432/clara
       - name: Lint (Biome)
         run: pnpm -r run lint
       - name: Build
         run: pnpm -r run build
       - name: Test
         run: pnpm -r run test:ci
+        env:
+          DATABASE_URL: postgresql://root:root@localhost:5432/clara

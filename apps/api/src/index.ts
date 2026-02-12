@@ -5,7 +5,7 @@ const server = createServer();
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
 
-server.listen({ port: PORT })
+server.listen({ port: PORT, host: '0.0.0.0' })
   .then(() => {
     // eslint-disable-next-line no-console
     console.log(`🚀 Server running on http://localhost:${PORT}`);

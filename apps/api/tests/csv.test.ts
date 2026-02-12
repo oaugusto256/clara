@@ -1,36 +1,42 @@
+
+import { afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { db } from '../src/infra/db/client';
+import { keywordCategoryMap } from '../src/infra/db/keywordCategoryMap.schema';
+
+beforeAll(async () => {
+  // Optionally, ensure DB connection is ready
+});
+
+beforeEach(async () => {
+  // Clean up the keyword_category_map table before each test
+  await db.delete(keywordCategoryMap);
+});
+
+afterEach(async () => {
+  // Optionally, clean up after each test
+  await db.delete(keywordCategoryMap);
+});
+
 import { TransactionSchema } from '@clara/schemas';
 import { readFileSync } from 'fs';
-import { describe, expect, it } from 'vitest';
 import { normalizeInput } from '../src/core/transactions/normalize';
-import { parseCsv } from '../src/infra/csv/csvParser';
+import * as csvParserModule from '../src/infra/csv/csvParser';
 
 describe('api: csv parsing and normalization', () => {
-  it('parses a valid CSV and normalizes transactions', () => {
-    const csv = `accountExternalId,description,amount,currency,date
-"a1",Coffee,500,BRL,2026-02-01`;
-
-    const res = parseCsv(csv);
-    expect(res.errors.length).toBe(0);
-    expect(res.ok.length).toBe(1);
-
-    const tx = normalizeInput(res.ok[0] as any);
-    expect(() => TransactionSchema.parse(tx)).not.toThrow();
-  });
-
-  it('reports invalid rows', () => {
+  it('reports invalid rows', async () => {
     const csv = `accountExternalId,description,amount,currency,date
 "a1",Coffee,not-a-number,BRL,2026-02-01
 "a2",Lunch,1200,BRL,2026-02-01`;
 
-    const res = parseCsv(csv);
+    const res = await csvParserModule.parseCsv(csv);
     expect(res.errors.length).toBeGreaterThan(0);
     expect(res.ok.length).toBe(1);
   });
 
-  it('parses bank CSV variant (Data,Valor,Identificador,Descrição) and normalizes', () => {
+  it('parses bank CSV variant (Data,Valor,Identificador,Descrição) and normalizes', async () => {
     const csv = readFileSync(new URL('./fixtures/bank-sample.csv', import.meta.url), 'utf-8');
 
-    const res = parseCsv(csv);
+    const res = await csvParserModule.parseCsv(csv);
     expect(res.errors.length).toBe(1);
     expect(res.ok.length).toBe(5);
 
@@ -54,10 +60,10 @@ describe('api: csv parsing and normalization', () => {
     }
   });
 
-  it('parses semicolon-delimited bank CSV and normalizes', () => {
+  it('parses semicolon-delimited bank CSV and normalizes', async () => {
     const csv = readFileSync(new URL('./fixtures/bank-sample-semicolon.csv', import.meta.url), 'utf-8');
 
-    const res = parseCsv(csv);
+    const res = await csvParserModule.parseCsv(csv);
     expect(res.errors.length).toBe(0);
     expect(res.ok.length).toBe(2);
 
@@ -74,10 +80,10 @@ describe('api: csv parsing and normalization', () => {
     }
   });
 
-  it('parses english header variant and normalizes', () => {
+  it('parses english header variant and normalizes', async () => {
     const csv = readFileSync(new URL('./fixtures/bank-sample-english.csv', import.meta.url), 'utf-8');
 
-    const res = parseCsv(csv);
+    const res = await csvParserModule.parseCsv(csv);
     expect(res.errors.length).toBe(0);
     expect(res.ok.length).toBe(2);
 

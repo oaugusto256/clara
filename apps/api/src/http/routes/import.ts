@@ -7,6 +7,11 @@ import TransactionJsonSchema from '../../generated-schemas/Transaction.schema.js
 
 
 export const importCsvRoute: FastifyPluginAsync = async (app) => {
+  // Error logging middleware
+  app.addHook('onError', async (request, reply, error) => {
+    app.log.error({ err: error }, 'Request error');
+  });
+
   app.post(
     '/import/csv',
     {
