@@ -3,6 +3,7 @@ import type { Transaction } from "@clara/schemas";
 import { Card } from "@clara/ui";
 import {
   createColumnHelper,
+  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getSortedRowModel,
@@ -10,8 +11,10 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
+import { format } from 'date-fns';
 import React, { useRef, useState } from "react";
 import { useImportCsvMutation } from "../queries/useImportCsvMutation";
+import { CATEGORY_COLORS } from '../utils/categoryColors';
 
 interface TransactionsUploadTableProps {
   transactions: Transaction[];
@@ -22,14 +25,64 @@ interface TransactionsUploadTableProps {
 
 const columnHelper = createColumnHelper<Transaction>();
 
+function formatDate(dateStr: string) {
+  if (!dateStr) return '';
+  try {
+    const d = new Date(dateStr);
+    return format(d, 'dd/MM/yyyy');
+  } catch {
+    return dateStr;
+  }
+}
+
+function formatAmount(amount: any, currency: string | undefined) {
+  if (typeof amount !== 'number') return '';
+  if (currency) {
+    try {
+      return amount.toLocaleString(undefined, {
+        style: 'currency',
+        currency,
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+    } catch {
+      return amount.toLocaleString(undefined, { minimumFractionDigits: 2 });
+    }
+  }
+  return amount.toLocaleString(undefined, { minimumFractionDigits: 2 });
+}
+
+function formatCurrency(currency: string) {
+  if (!currency) return '';
+  return currency.toUpperCase();
+}
+
+function CategoryBadge({ categoryKey }: { categoryKey: string }) {
+  const color = CATEGORY_COLORS[categoryKey] || CATEGORY_COLORS.default;
+  return (
+    <span
+      className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold text-white uppercase"
+      style={{ backgroundColor: color }}
+    >
+      {categoryKey || 'Uncategorized'}
+    </span>
+  );
+}
+
 const columns = [
   columnHelper.accessor('date', {
     header: 'Date',
-    cell: info => info.getValue(),
+    cell: info => formatDate(info.getValue()),
+    size: 110,
+    minSize: 80,
+    maxSize: 200,
   }),
   columnHelper.accessor('description', {
     header: 'Description',
     cell: info => info.getValue(),
+    size: 220,
+    minSize: 100,
+    maxSize: 400,
   }),
   columnHelper.accessor(row => (
     row.amount && typeof row.amount.amount === 'number'
@@ -41,35 +94,38 @@ const columns = [
     cell: info => {
       const original = info.row.original;
       const value = info.getValue();
-      if (typeof value !== 'number') {
-        return '';
-      }
       const currency =
         original.amount && typeof original.amount.currency === 'string'
           ? original.amount.currency
           : undefined;
-      if (currency) {
-        try {
-          return value.toLocaleString(undefined, {
-            style: 'currency',
-            currency,
-          });
-        } catch {
-          // Fallback to locale number formatting if currency is invalid
-          return value.toLocaleString();
-        }
-      }
-      return value.toLocaleString();
+      return (
+        <span className="font-mono">
+          {formatAmount(value, currency)}
+        </span>
+      );
     },
+    size: 100,
+    minSize: 80,
+    maxSize: 200,
   }),
   columnHelper.accessor('categoryKey', {
     header: 'Category',
-    cell: info => info.getValue(),
+    cell: info => <CategoryBadge categoryKey={info.getValue() || ''} />,
+    size: 120,
+    minSize: 80,
+    maxSize: 200,
   }),
   columnHelper.accessor(row => row.amount && typeof row.amount.currency === 'string' ? row.amount.currency : '', {
     id: 'currency',
     header: 'Currency',
-    cell: info => info.getValue(),
+    cell: info => (
+      <span className="inline-block px-2 py-0.5 rounded bg-base-200 text-xs font-semibold text-base-content border border-base-300">
+        {formatCurrency(info.getValue())}
+      </span>
+    ),
+    size: 90,
+    minSize: 60,
+    maxSize: 150,
   }),
 ];
 
@@ -78,6 +134,8 @@ const TransactionsUploadTable = ({ transactions, setTransactions }: Transactions
   const [error, setError] = useState<string | null>(null);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
+  const [columnSizing, setColumnSizing] = useState({});
+  const [columnSizingInfo, setColumnSizingInfo] = useState({});
 
   const importCsvMutation = useImportCsvMutation({
     onSuccess: (data) => {
@@ -113,9 +171,15 @@ const TransactionsUploadTable = ({ transactions, setTransactions }: Transactions
     state: {
       sorting,
       globalFilter,
+      columnSizing,
+      columnSizingInfo,
     },
+    enableColumnResizing: true,
+    columnResizeMode: 'onChange',
     onSortingChange: setSorting,
     onGlobalFilterChange: setGlobalFilter,
+    onColumnSizingChange: setColumnSizing,
+    onColumnSizingInfoChange: setColumnSizingInfo,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -168,20 +232,12 @@ const TransactionsUploadTable = ({ transactions, setTransactions }: Transactions
                   {table.getHeaderGroups().map(headerGroup => (
                     <tr key={headerGroup.id}>
                       {headerGroup.headers.map(header => {
-                        let widthClass = "";
-                        switch (header.column.id) {
-                          case "date": widthClass = "w-24"; break;
-                          case "description": widthClass = "w-64"; break;
-                          case "amount": widthClass = "w-32"; break;
-                          case "categoryKey": widthClass = "w-32"; break;
-                          case "currency": widthClass = "w-24"; break;
-                          default: widthClass = "";
-                        }
                         const isSortable = header.column.getCanSort();
                         return (
                           <th
                             key={header.id}
-                            className={["p-2 select-none bg-base-300 border-1 border-base-100 sticky top-0 z-30", widthClass].join(" ")}
+                            className={["p-2 select-none bg-base-300 border border-base-100 sticky top-0 z-30 relative group"].join(" ")}
+                            style={{ width: header.getSize() }}
                           >
                             {header.isPlaceholder ? null : (
                               isSortable ? (
@@ -190,7 +246,9 @@ const TransactionsUploadTable = ({ transactions, setTransactions }: Transactions
                                   className="inline-flex items-center w-full cursor-pointer text-left"
                                   onClick={() => header.column.toggleSorting()}
                                 >
-                                  {header.column.columnDef.header}
+                                  {typeof header.column.columnDef.header === 'string'
+                                    ? header.column.columnDef.header
+                                    : ''}
                                   <span className="ml-2 text-xs">
                                     {header.column.getIsSorted() === 'asc'
                                       ? '▲'
@@ -201,9 +259,23 @@ const TransactionsUploadTable = ({ transactions, setTransactions }: Transactions
                                 </button>
                               ) : (
                                 <span className="inline-flex items-center w-full">
-                                  {header.column.columnDef.header}
+                                  {typeof header.column.columnDef.header === 'string'
+                                    ? header.column.columnDef.header
+                                    : ''}
                                 </span>
                               )
+                            )}
+                            {/* Resizer handle */}
+                            {header.column.getCanResize() && (
+                              <div
+                                onMouseDown={header.getResizeHandler()}
+                                onTouchStart={header.getResizeHandler()}
+                                className={[
+                                  "absolute right-0 top-0 h-full w-1.5 cursor-col-resize select-none z-50 bg-transparent group-hover:bg-primary/40 transition-colors",
+                                  header.column.getIsResizing() ? "bg-primary" : ""
+                                ].join(" ")}
+                                style={{ userSelect: 'none', touchAction: 'none' }}
+                              />
                             )}
                           </th>
                         );
@@ -255,7 +327,7 @@ const TransactionsUploadTable = ({ transactions, setTransactions }: Transactions
                                   key={cell.id}
                                   className={["px-2 py-2 text-sm whitespace-nowrap text-gray-300 font-light", widthClass, extraClass].join(" ")}
                                 >
-                                  {cell.renderValue()}
+                                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                 </td>
                               );
                             })}

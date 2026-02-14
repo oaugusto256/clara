@@ -20,38 +20,8 @@ interface CategoryPieChartProps {
   data: CategoryTotal[];
 }
 
-const COLORS = [
-  "#6366f1", // indigo
-  "#f59e42", // orange
-  "#10b981", // green
-  "#f43f5e", // red
-  "#eab308", // yellow
-  "#3b82f6", // blue
-  "#a21caf", // purple
-  "#64748b", // slate
-  "#6d28d9", // violet
-  "#14b8a6", // teal
-  "#f472b6", // pink
-  "#facc15", // gold
-  "#0ea5e9", // sky
-  "#f87171", // light red
-  "#8b5cf6", // deep violet
-  "#22d3ee", // cyan
-  "#fbbf24", // amber
-  "#4ade80", // light green
-  "#c026d3", // magenta
-  "#fcd34d", // light yellow
-  "#7c3aed", // purple blue
-  "#a3e635", // lime
-  "#fca5a5", // rose
-  "#38bdf8", // blue sky
-  "#fda4af", // rose pink
-  "#fde68a", // pale yellow
-  "#818cf8", // periwinkle
-  "#f9a8d4", // light pink
-  "#bef264", // light lime
-  "#fef08a", // pale gold
-];
+import { CATEGORY_COLOR_ARRAY } from '../utils/categoryColors';
+const COLORS = CATEGORY_COLOR_ARRAY;
 
 const CategoryPieChart: React.FC<CategoryPieChartProps> = ({ data }) => {
   const total = data.reduce((sum, d) => sum + d.total, 0);

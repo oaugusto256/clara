@@ -113,9 +113,6 @@ export async function parseCsv(raw: string): Promise<ParseResult> {
   const { transactions, uniqueKeywords, errors } = parseCsvPure(raw);
   const result: ParseResult = { ok: [], errors: [...errors] };
   if (transactions.length === 0) return result;
-
-  console.log(uniqueKeywords);
-
   // Batch fetch keyword-category map
   let keywordCategoryMapDb = await getKeywordCategoryMap();
   // Save new keywords in batch
