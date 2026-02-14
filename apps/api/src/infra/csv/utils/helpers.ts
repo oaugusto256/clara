@@ -1,5 +1,11 @@
 // CSV parsing helpers
 
+// Removes 'parcela x/y' (installment info) from transaction descriptions
+export function removeInstallmentInfo(text: string): string {
+  // Regex matches 'parcela' as a whole word (case-insensitive), optional dash/spaces, then numbers/slash
+  return text.replace(/\s*-?\s*\bparcela\b\s*\d+\/\d+/gi, '').trim();
+}
+
 export function parseAmountString(v: string): number {
   if (!v) return NaN;
   const s = v.replace(/[^0-9,.-]/g, '').trim();

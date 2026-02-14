@@ -107,10 +107,10 @@ Performance, UX improvements, documentation, deploy.
 ### 4.4 Backend Tasks (Level 3)
 
 - [x] Setup Fastify server
-- [ ] Setup PostgreSQL connection
-- [ ] Setup Drizzle ORM
+- [x] Setup PostgreSQL connection
+- [x] Setup Drizzle ORM
 - [ ] Implement transaction persistence
-- [ ] Implement category persistence
+- [x] Implement category persistence
 - [ ] Implement recommendation persistence
 - [x] Expose read-only APIs for dashboard
 - [ ] Add audit logging

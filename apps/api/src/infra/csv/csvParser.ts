@@ -22,7 +22,7 @@ import { categorizeTransactions, SimpleTransaction } from '@clara/rules-engine';
 import { NormalizedTransactionInputSchema, type NormalizedTransactionInput } from '@clara/schemas';
 import { db } from '../db/client';
 import { keywordCategoryMap } from '../db/keywordCategoryMap.schema';
-import { parseAmountString, parseDateString } from './utils/helpers';
+import { parseAmountString, parseDateString, removeInstallmentInfo } from './utils/helpers';
 import { detectDelimiter, normalizeHeaderName, parseCSVLine } from './utils/parserUtils';
 
 export type ParseResult = {
@@ -95,12 +95,14 @@ export function parseCsvPure(raw: string): { transactions: SimpleTransaction[]; 
 
     if (!obj.currency) obj.currency = 'BRL';
     if (obj.date && obj.description && typeof obj.amount === 'number') {
+      // Remove installment info from description before using as title/keyword
+      const cleanedDescription = removeInstallmentInfo(obj.description);
       simpleTxs.push({
         date: obj.date,
-        title: obj.description,
+        title: cleanedDescription,
         amount: obj.amount,
       });
-      keywordSet.add(obj.description.toLowerCase());
+      keywordSet.add(cleanedDescription.toLowerCase());
     }
   }
   return { transactions: simpleTxs, uniqueKeywords: Array.from(keywordSet), errors };
@@ -112,10 +114,13 @@ export async function parseCsv(raw: string): Promise<ParseResult> {
   const result: ParseResult = { ok: [], errors: [...errors] };
   if (transactions.length === 0) return result;
 
+  console.log(uniqueKeywords);
+
   // Batch fetch keyword-category map
   let keywordCategoryMapDb = await getKeywordCategoryMap();
   // Save new keywords in batch
-  const newKeywords = uniqueKeywords.filter(k => !(k in keywordCategoryMapDb));
+  const newKeywords = uniqueKeywords
+    .filter(k => !(k in keywordCategoryMapDb))
   if (newKeywords.length) {
     await Promise.all(newKeywords.map(saveKeywordCategory));
     // Add to map for categorization

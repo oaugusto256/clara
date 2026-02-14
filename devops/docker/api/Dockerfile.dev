@@ -38,9 +38,6 @@ COPY packages/ui ./packages/ui
 # Expose port
 EXPOSE 3000
 
-# Copy API source code before starting dev server
-COPY apps/api/src ./apps/api/src
-
 # Set working directory to API package before starting dev server
 WORKDIR /app/apps/api
 CMD ["pnpm", "run", "dev"]

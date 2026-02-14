@@ -27,6 +27,8 @@ services:
         condition: service_healthy
     volumes:
       - ../../packages:/app/packages
+      - ../../apps/api/src:/app/apps/api/src
+      - ../../:/app/monorepo_root:ro
     networks:
       - clara-network
 
@@ -52,7 +54,6 @@ services:
 
 volumes:
   postgres_data:
-  postgres_data_dev:
 
 networks:
   clara-network:
