@@ -13,6 +13,7 @@ import {
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { format } from 'date-fns';
 import React, { useRef, useState } from "react";
+import { FaSearch } from "react-icons/fa";
 import { useImportCsvMutation } from "../queries/useImportCsvMutation";
 import { CATEGORY_COLORS } from '../utils/categoryColors';
 
@@ -119,13 +120,13 @@ const columns = [
     id: 'currency',
     header: 'Currency',
     cell: info => (
-      <span className="inline-block px-2 py-0.5 rounded bg-base-200 text-xs font-semibold text-base-content border border-base-300">
+      <span className="inline-block text-xs text-base-content text-right font-semibold w-full px-4">
         {formatCurrency(info.getValue())}
       </span>
     ),
-    size: 90,
+    size: 80,
     minSize: 60,
-    maxSize: 150,
+    maxSize: 80,
   }),
 ];
 
@@ -200,18 +201,25 @@ const TransactionsUploadTable = ({ transactions, setTransactions }: Transactions
       <div className="flex flex-col gap-4">
         <h2 className="card-title text-base-content">All Transactions</h2>
         <div className="flex justify-between w-full gap-4">
-          <input
-            type="text"
-            value={globalFilter}
-            onChange={e => setGlobalFilter(e.target.value)}
-            placeholder="Filter transactions..."
-            aria-label="Filter transactions"
-            className="input input-bordered input-primary w-full max-w-xs"
-          />
+          <div className="relative w-full max-w-xs">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none z-10">
+              <FaSearch className="w-3 h-3 text-base-content/60" />
+            </span>
+            <input
+              type="text"
+              value={globalFilter}
+              name="filter-transactions-input"
+              placeholder="Filter transactions"
+              aria-label="Filter transactions"
+              onChange={e => setGlobalFilter(e.target.value)}
+              className="input input-bordered input-primary w-full pl-8"
+            />
+          </div>
           <input
             type="file"
             accept=".csv"
             onChange={handleFileChange}
+            name="import-csv-input"
             className="block relative file-input file-input-bordered file-input-primary text-sm"
           />
         </div>
