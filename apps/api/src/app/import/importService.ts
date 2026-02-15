@@ -25,7 +25,12 @@ export async function importCsv(csv: string): Promise<ImportResult> {
 
   // Persist all valid transactions
   if (normalized.length > 0) {
-    await saveTransactions(normalized);
+    try {
+      await saveTransactions(normalized);
+    } catch (error: any) {
+      // Propagate database errors to the caller for consistent error reporting
+      throw new Error(`Failed to save imported transactions: ${error?.message ?? 'unknown error'}`);
+    }
   }
 
   return { parsed: parsed.ok, normalized, errors: parsed.errors.concat(normalizationErrors) };
