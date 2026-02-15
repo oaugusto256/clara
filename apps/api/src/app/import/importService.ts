@@ -1,5 +1,6 @@
 import { normalizeInput } from '../../core/transactions/normalize';
 import { parseCsv, type ParseResult } from '../../infra/csv/csvParser';
+import { saveTransactions } from '../../infra/db/transactions.crud';
 
 export type ImportResult = {
   parsed: ParseResult['ok'];
@@ -20,6 +21,11 @@ export async function importCsv(csv: string): Promise<ImportResult> {
     } catch (err: any) {
       normalizationErrors.push({ line: i + 1, reason: err?.message ?? 'normalization failed' });
     }
+  }
+
+  // Persist all valid transactions
+  if (normalized.length > 0) {
+    await saveTransactions(normalized);
   }
 
   return { parsed: parsed.ok, normalized, errors: parsed.errors.concat(normalizationErrors) };

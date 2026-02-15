@@ -8,6 +8,20 @@
       "when": 1770818630925,
       "tag": "0000_chubby_skaar",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1771165134617,
+      "tag": "0001_fast_spitfire",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1771165688077,
+      "tag": "0002_silly_harrier",
+      "breakpoints": true
     }
   ]
 }

@@ -21,7 +21,7 @@ export function normalizeInput(input: NormalizedTransactionInput): Transaction {
 
   const tx: Transaction = {
     id: uuid(),
-    userId: 'u1', // TODO: wire real user context
+    userId: '999', // TODO: Replace with actual user ID from auth context
     accountId: input.accountExternalId ?? "unknown",
     description: input.description,
     amount: { amount: Math.round(input.amount), currency: input.currency },
