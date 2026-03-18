@@ -1,0 +1,16 @@
+---
+description: Fastify/Node backend conventions for Clara (apps/api)
+globs: apps/api/**/*
+alwaysApply: false
+---
+
+# Backend (apps/api): Fastify standards
+
+- Keep routes thin: route -> service -> repository (or direct data access) -> schema validation.
+- Validate all input at the boundary using the shared domain schemas (do not trust frontend payloads).
+- Expose explicit, predictable read-only APIs for dashboard data; avoid magic behavior and implicit side effects.
+- Financial logic belongs in the rules engine layer; backend should orchestrate/persist, not calculate.
+- Prefer deterministic/predictable error handling:
+  - return clear error messages
+  - log actionable details
+- For any change, include a verification plan (unit tests + integration surface if applicable).

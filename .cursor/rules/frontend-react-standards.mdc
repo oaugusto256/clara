@@ -1,0 +1,21 @@
+---
+description: React/TypeScript UI standards for Clara (apps/web)
+globs: apps/web/**/*
+alwaysApply: false
+---
+
+# Frontend (apps/web): React standards
+
+- Use feature-based organization under `apps/web/src/features/`.
+- Server state must live in the dedicated data-fetching/query layer; components should derive UI state.
+- Prefer derived state over stored state for server data.
+- Schema-driven forms and validation (do not invent validation rules in components).
+- Performance mindset for large datasets:
+  - virtualize tables
+  - avoid unnecessary re-renders
+  - memoization only when intentional
+- Every new/changed UI must explicitly handle:
+  - `loading`
+  - `empty`
+  - `error`
+  - `success`

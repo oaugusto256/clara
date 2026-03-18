@@ -1,0 +1,13 @@
+---
+description: Domain invariants and money/currency rules
+globs: apps/**/*
+alwaysApply: false
+---
+
+# Domain invariants (use `docs/DOMAIN_SCHEMAS.md`)
+
+- Money is represented as integers (minor units) and must always include an explicit `currency`.
+- Do not use floating-point arithmetic for financial calculations.
+- Transactions are immutable; historical data must not be silently overwritten.
+- Source is informational only (input source should not change canonical identity/business meaning).
+- No financial calculation without currency.

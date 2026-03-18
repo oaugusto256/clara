@@ -1,0 +1,17 @@
+---
+description: Core Clara engineering principles for AI-assisted development
+alwaysApply: true
+---
+
+# Clara: How the AI should work
+
+- Map requested changes to the most relevant task(s) in `docs/TASKS.md` before coding.
+- Treat `docs/DOMAIN_SCHEMAS.md` as the canonical source of truth for domain types and invariants.
+- Prefer clarity over cleverness: readable, explicit code and incremental complexity.
+- Keep architectural boundaries:
+  - Frontend: UI states + rendering; no financial calculations outside the rules engine.
+  - Backend: thin routes + validated inputs; predictable error handling.
+- For UI changes, always define `loading`, `empty`, `error`, and `success` states.
+- For financial logic, ensure determinism and explainability (no hidden side effects).
+- If scope/acceptance criteria are missing, ask targeted clarifying questions before making broad changes.
+- Include a short test/verification plan and highlight edge cases affected by the change.
