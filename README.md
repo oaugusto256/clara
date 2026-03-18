@@ -133,7 +133,6 @@ Rules are:
 This project was built to demonstrate architectural decisions, product thinking, and technical maturity in a realistic personal finance (FinTech) context.
 
 ---
-
 ## Getting started ⚡️
 
 1. Install pnpm (if you don't have it):
@@ -161,6 +160,30 @@ This project was built to demonstrate architectural decisions, product thinking,
    pnpm run format
    ```
 
+---
+## Quick Local Run (Front + Back + DB)
+
+1. Install dependencies:
+   ```bash
+   pnpm install
+   ```
+
+2. Terminal 1 (DB + API, Docker):
+   ```bash
+   pnpm -w -F @clara/api run dev:all
+   ```
+
+3. Terminal 2 (Frontend, Vite):
+   ```bash
+   pnpm -w -F @clara/web dev
+   ```
+
+Open:
+- Frontend: `http://localhost:3001`
+- API docs: `http://localhost:3000/docs`
+
+For more details (optional native modes, stopping/restarting, etc), see `docs/LOCAL_DEV.md`.
+
 Developer tooling notes:
 - Run `pnpm run lint` to lint across the workspace (uses Biome: `biome check`). ⚙️
 - Use `pnpm run format` to format the workspace (uses Biome: `biome format`). ✨
@@ -171,3 +194,6 @@ API docs and preview:
 - Start the API server (`pnpm -w -F @clara/api run dev` or `pnpm -w -F @clara/api run start` after build).
 - Open the interactive preview at: `http://localhost:3000/docs` (loads `/docs/json`).
 - The OpenAPI JSON is available at `/docs/json` for automated tools and previews.
+
+Local development (Front, Back, Database):
+- See `docs/LOCAL_DEV.md` for the full "run front + run back + run database" workflow.
