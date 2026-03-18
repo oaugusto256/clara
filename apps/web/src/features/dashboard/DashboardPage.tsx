@@ -1,15 +1,20 @@
 import type { Transaction } from "@clara/schemas";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DashboardLayout from "./DashboardLayout";
 import CategoryPieChartContainer from "./components/CategoryPieChartContainer";
 import TransactionsUploadTable from "./components/TransactionsUploadTable";
+import { useTransactionsQuery } from "./queries/useTransactionsQuery";
 
 /**
  * Main dashboard page entrypoint.
- * Add widgets/components to the layout as they are implemented.
  */
 export default function DashboardPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const { data, isLoading, isError } = useTransactionsQuery();
+
+  useEffect(() => {
+    if (data) setTransactions(data);
+  }, [data]);
 
   return (
     <DashboardLayout>

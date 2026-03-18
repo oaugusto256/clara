@@ -5,6 +5,7 @@ import type { FastifyInstance } from 'fastify';
 import Fastify from 'fastify';
 import { importCsvRoute } from './http/routes/import';
 import { keywordCategoryRoutes } from './http/routes/keywordCategory';
+import { transactionsRoute } from './http/routes/transactions';
 
 export function createServer(): FastifyInstance {
   const app = Fastify({ logger: true });
@@ -88,6 +89,7 @@ export function createServer(): FastifyInstance {
   });
 
   app.register(importCsvRoute);
+  app.register(transactionsRoute);
   app.register(keywordCategoryRoutes);
 
   // Register Swagger UI
