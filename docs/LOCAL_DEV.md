@@ -18,30 +18,29 @@ pnpm install
 
 ## 2) Start Database + Backend (Docker)
 
+
 The backend + Postgres dev setup is defined in:
 - `devops/docker/docker-compose.dev.yml`
 - `devops/docker/api/Dockerfile.dev`
 
-### Option A: Use the workspace script (recommended)
+### Option A: Use the root script (recommended)
 
 ```bash
-pnpm -w -F @clara/api run dev:all
+pnpm run docker:up
 ```
 
-What this does (from `apps/api/package.json`):
-- starts the dev docker stack using `docker-compose -f ../../devops/docker/docker-compose.dev.yml up -d`
-- includes a one-off `migrate` container that runs `pnpm run db:migrate:docker` before the API starts
+This will build and start all backend and database containers in detached mode using the dev compose file.
 
 ### Option B: Run Docker Compose directly
 
 ```bash
-docker-compose -f devops/docker/docker-compose.dev.yml up -d
+docker compose -f devops/docker/docker-compose.dev.yml --profile dev up --build -d
 ```
 
 ### Option C: Run DB only (Docker)
 
 ```bash
-docker-compose -f devops/docker/docker-compose.dev.yml up -d db
+docker compose -f devops/docker/docker-compose.dev.yml up -d db
 ```
 
 This exposes Postgres on `localhost:5432` (see the compose `ports` mapping).
@@ -128,7 +127,7 @@ For the "native API" option (Option D), create `apps/api/.env` from `apps/api/.e
 To stop/remove containers:
 
 ```bash
-docker-compose -f devops/docker/docker-compose.dev.yml down
+docker compose -f devops/docker/docker-compose.dev.yml down
 ```
 
 ## 6) Useful notes / edge cases
