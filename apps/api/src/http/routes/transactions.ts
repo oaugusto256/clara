@@ -1,5 +1,5 @@
 import type { FastifyPluginAsync } from 'fastify';
-import TransactionJsonSchema from '../../../generated-schemas/Transaction.schema.json';
+import TransactionJsonSchema from '../../generated-schemas/Transaction.schema.json';
 import { fetchTransactions } from '../../app/transactions/transactionsService';
 
 export const transactionsRoute: FastifyPluginAsync = async (app) => {
