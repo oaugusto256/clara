@@ -4,7 +4,7 @@
 
 The product is built to deliver value **from day one**, even without automatic bank integrations, and to evolve safely into **Open Finance** when it becomes regulatory and financially viable.
 
-![Clara Dashboard](clara-dashboard.png)
+![Clara Dashboard](clara-dashboard-printscreen.png)
 
 ## 🎯 Product Vision
 
