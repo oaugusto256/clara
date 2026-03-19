@@ -1,5 +1,6 @@
 // CategoryPieChart.tsx
 // Pie chart for spending by category
+import { useTheme } from "@/hooks/useTheme";
 import { Card } from "@clara/ui";
 import {
   Cell,
@@ -10,6 +11,7 @@ import {
   ResponsiveContainer,
   Tooltip
 } from "recharts";
+import { CATEGORY_COLOR_ARRAY } from '../utils/categoryColors';
 
 export interface CategoryTotal {
   categoryKey: string;
@@ -19,12 +21,13 @@ export interface CategoryTotal {
 interface CategoryPieChartProps {
   data: CategoryTotal[];
 }
-
-import { CATEGORY_COLOR_ARRAY } from '../utils/categoryColors';
 const COLORS = CATEGORY_COLOR_ARRAY;
 
 const CategoryPieChart: React.FC<CategoryPieChartProps> = ({ data }) => {
   const total = data.reduce((sum, d) => sum + d.total, 0);
+  const { colorMode } = useTheme();
+
+  console.log(colorMode)
 
   // Custom label for slices > 3% with consistent typography and color
   const renderLabel = (props: any) => {
@@ -146,7 +149,7 @@ const CategoryPieChart: React.FC<CategoryPieChartProps> = ({ data }) => {
                             dominantBaseline="middle"
                             fontSize={18}
                             fontWeight={700}
-                            fill="#fff"
+                            fill={colorMode === 'light' ? '#000' : '#fff'}
                             fontFamily="'Inter', 'Segoe UI', Arial, sans-serif"
                           >
                             {total.toLocaleString(undefined, { style: 'currency', currency: 'BRL' })}
@@ -157,7 +160,7 @@ const CategoryPieChart: React.FC<CategoryPieChartProps> = ({ data }) => {
                             textAnchor="middle"
                             dominantBaseline="middle"
                             fontSize={12}
-                            fill="#a3a3a3"
+                            fill={colorMode === 'light' ? '#000' : '#a3a3a3'}
                             fontFamily="'Inter', 'Segoe UI', Arial, sans-serif"
                           >
                             Total

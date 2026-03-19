@@ -74,6 +74,19 @@ OpenAPI UI:
 http://localhost:3000/docs
 ```
 
+### Option E: Run everything from root (DB + API + Web)
+```bash
+pnpm dev:all
+```
+
+This starts the Docker stack for Postgres + the backend, then runs the Vite frontend.
+
+When using this option, you can skip steps 2 and 3.
+
+Expected URLs:
+- API: `http://localhost:3000/docs`
+- Web: `http://localhost:3001`
+
 ## 3) Start Frontend (Vite, native)
 
 The frontend is a Vite app configured in:

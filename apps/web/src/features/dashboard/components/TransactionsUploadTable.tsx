@@ -333,7 +333,7 @@ const TransactionsUploadTable = ({ transactions, setTransactions }: Transactions
                               return (
                                 <td
                                   key={cell.id}
-                                  className={["px-2 py-2 text-sm whitespace-nowrap text-gray-300 font-light", widthClass, extraClass].join(" ")}
+                                  className={["px-2 py-2 text-sm whitespace-nowrap text-base-content/80 font-light", widthClass, extraClass].join(" ")}
                                 >
                                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                 </td>
