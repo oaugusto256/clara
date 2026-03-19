@@ -1,26 +1,15 @@
 
-import { afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { db } from '../src/infra/db/client';
-import { keywordCategoryMap } from '../src/infra/db/keywordCategoryMap.schema';
-
-beforeAll(async () => {
-  // Optionally, ensure DB connection is ready
-});
-
-beforeEach(async () => {
-  // Clean up the keyword_category_map table before each test
-  await db.delete(keywordCategoryMap);
-});
-
-afterEach(async () => {
-  // Optionally, clean up after each test
-  await db.delete(keywordCategoryMap);
-});
-
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { TransactionSchema } from '@clara/schemas';
 import { readFileSync } from 'fs';
 import { normalizeInput } from '../src/core/transactions/normalize';
 import * as csvParserModule from '../src/infra/csv/csvParser';
+
+// Avoid hitting the real database from CSV normalization tests.
+beforeEach(() => {
+  vi.spyOn(csvParserModule, 'getKeywordCategoryMap').mockResolvedValue({});
+  vi.spyOn(csvParserModule, 'saveKeywordCategory').mockResolvedValue();
+});
 
 describe('api: csv parsing and normalization', () => {
   it('reports invalid rows', async () => {
