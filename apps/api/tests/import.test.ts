@@ -1,6 +1,13 @@
 import { readFileSync } from 'fs';
-import { describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it, vi } from 'vitest';
 import { createServer } from '../src/server';
+import * as csvParserModule from '../src/infra/csv/csvParser';
+
+// Avoid hitting the real database when exercising /import/csv.
+beforeAll(() => {
+  vi.spyOn(csvParserModule, 'getKeywordCategoryMap').mockResolvedValue({});
+  vi.spyOn(csvParserModule, 'saveKeywordCategory').mockResolvedValue();
+});
 
 describe('api: import endpoint', () => {
   it('accepts CSV text and returns parsed+normalized data', async () => {

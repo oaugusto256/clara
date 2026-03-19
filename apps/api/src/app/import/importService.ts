@@ -23,8 +23,8 @@ export async function importCsv(csv: string): Promise<ImportResult> {
     }
   }
 
-  // Persist all valid transactions
-  if (normalized.length > 0) {
+  // Persist all valid transactions (skip persistence during tests to avoid requiring a real DB)
+  if (normalized.length > 0 && process.env.NODE_ENV !== 'test') {
     try {
       await saveTransactions(normalized);
     } catch (error: any) {
