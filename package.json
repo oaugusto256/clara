@@ -8,8 +8,9 @@
 	],
 	"scripts": {
 		"bootstrap": "pnpm install",
-		"dev:all": "pnpm -w -F @clara/api run dev:all && pnpm -w -F @clara/web dev",
+		"dev:all": "pnpm run docker:up && pnpm -w -F @clara/web dev",
 		"postinstall": "pnpm -w -F @clara/schemas build",
+		"docker:up": "docker compose -f devops/docker/docker-compose.dev.yml --profile dev up --build -d",
 		"build": "NODE_OPTIONS=--max-old-space-size=4096 pnpm -r run build",
 		"test": "pnpm -r run test",
 		"test:ci": "pnpm -r run test:ci",

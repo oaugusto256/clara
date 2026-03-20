@@ -1,4 +1,4 @@
-# Clara 💳📊
+# Clara
 
 **Clara** is a personal finance platform designed to help individuals understand their spending, visualize financial patterns, and make better decisions about their money.
 
@@ -6,7 +6,7 @@ The product is built to deliver value **from day one**, even without automatic b
 
 ![Clara Dashboard](clara-dashboard-printscreen.png)
 
-## 🎯 Product Vision
+## Product Vision
 
 - Financial clarity above all
 - Immediate value for users
@@ -15,26 +15,26 @@ The product is built to deliver value **from day one**, even without automatic b
 
 ---
 
-## 🧠 Core Features
+## Core Features
 
-### 📥 Financial Data Import
+### Financial Data Import
 - CSV and OFX file uploads
 - Support for multiple financial institutions
 - Automatic transaction normalization
 
-### 🏷 Intelligent Categorization
+### Intelligent Categorization
 - Automatic expense classification
 - Declarative, schema-based rules
 - Manual adjustments with full reprocessing
 
-### 📊 Financial Visualizations
+### Financial Visualizations
 - Pie charts by category
 - Monthly spending evolution
 - Comparison between:
   - actual spending
   - recommended budget
 
-### 🧭 Financial Recommendations
+### Financial Recommendations
 - Based on economic studies
 - Adjusted by:
   - user location
@@ -44,7 +44,7 @@ The product is built to deliver value **from day one**, even without automatic b
 
 ---
 
-## 🔌 Open Finance
+## Open Finance
 
 This project **does not directly connect to banks** in this repository.
 
@@ -61,7 +61,7 @@ A mocked Open Finance flow is used to simulate:
 
 ---
 
-## 🧱 Architecture
+## Architecture
 
 ```text
 apps/
@@ -75,7 +75,7 @@ packages/
 ```
 
 
-## 🧠 Rules Engine
+## Rules Engine
 
 The rules engine is responsible for:
 
@@ -91,7 +91,7 @@ Rules are:
 
 ---
 
-## 💰 Monetization (Product Vision)
+## Monetization (Product Vision)
 
 - Free plan:
   - Manual data import
@@ -104,7 +104,7 @@ Rules are:
 
 ---
 
-## 🧪 Testing
+## Testing
 
 - Unit tests for financial rules
 - Categorization tests
@@ -113,7 +113,7 @@ Rules are:
 
 ---
 
-## 🚀 Roadmap
+## Roadmap
 
 ### MVP
 - CSV/OFX import
@@ -128,12 +128,12 @@ Rules are:
 
 ---
 
-## 📌 Note
+## Note
 
 This project was built to demonstrate architectural decisions, product thinking, and technical maturity in a realistic personal finance (FinTech) context.
 
 ---
-## Getting started ⚡️
+## Getting started
 
 1. Install pnpm (if you don't have it):
 
