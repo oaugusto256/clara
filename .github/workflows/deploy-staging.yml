@@ -51,6 +51,13 @@ jobs:
           build-args: VITE_API_URL=${{ secrets.STG_API_URL }}
           tags: ghcr.io/${{ github.repository_owner }}/clara-web:stg
 
+      - name: Debug - Test VPS connectivity
+        run: |
+          echo "STG_VPS_HOST is set: ${{ secrets.STG_VPS_HOST != '' }}"
+          echo "STG_VPS_USER is set: ${{ secrets.STG_VPS_USER != '' }}"
+          echo "STG_VPS_SSH_KEY is set: ${{ secrets.STG_VPS_SSH_KEY != '' }}"
+          nc -zv ${{ secrets.STG_VPS_HOST }} 22 && echo "Port 22 REACHABLE" || echo "Port 22 UNREACHABLE"
+
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v1
         env:
