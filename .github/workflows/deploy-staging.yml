@@ -56,7 +56,7 @@ jobs:
           echo "STG_VPS_HOST is set: ${{ secrets.STG_VPS_HOST != '' }}"
           echo "STG_VPS_USER is set: ${{ secrets.STG_VPS_USER != '' }}"
           echo "STG_VPS_SSH_KEY is set: ${{ secrets.STG_VPS_SSH_KEY != '' }}"
-          nc -zv ${{ secrets.STG_VPS_HOST }} 22 && echo "Port 22 REACHABLE" || echo "Port 22 UNREACHABLE"
+          nc -zv ${{ secrets.STG_VPS_HOST }} 22022 && echo "Port 22022 REACHABLE" || echo "Port 22022 UNREACHABLE"
 
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v1
@@ -67,6 +67,7 @@ jobs:
           host: ${{ secrets.STG_VPS_HOST }}
           username: ${{ secrets.STG_VPS_USER }}
           key: ${{ secrets.STG_VPS_SSH_KEY }}
+          port: 22022
           envs: GHCR_TOKEN,GHCR_USER
           script: |
             echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
