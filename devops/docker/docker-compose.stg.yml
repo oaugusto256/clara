@@ -46,7 +46,7 @@ services:
         condition: service_completed_successfully
     healthcheck:
       # /docs/json is the Fastify swagger JSON endpoint (verified in apps/api/src/index.ts)
-      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/docs/json | grep -q openapi || exit 1"]
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/docs/json | grep -q openapi || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
