@@ -8,9 +8,15 @@
 # When you buy a real domain, replace these two hostnames and redeploy.
 
 clara-stg.duckdns.org {
+    tls {
+        ca https://acme-v02.api.letsencrypt.org/directory
+    }
     reverse_proxy web:80
 }
 
 clara-stg-api.duckdns.org {
+    tls {
+        ca https://acme-v02.api.letsencrypt.org/directory
+    }
     reverse_proxy api:3000
 }
