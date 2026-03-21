@@ -19,6 +19,7 @@ coverage/
 
 # Ignore environment variables for Docker
 .env.docker
+.env.*
 
 # Git worktrees
 .worktrees/

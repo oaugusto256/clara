@@ -1,0 +1,16 @@
+# devops/caddy/Caddyfile.stg
+#
+# Two separate DuckDNS subdomains are required (DuckDNS only supports one level).
+# Register both at duckdns.org pointing to your VPS IP:
+#   clara-stg       → for the web frontend
+#   clara-stg-api   → for the API
+#
+# When you buy a real domain, replace these two hostnames and redeploy.
+
+clara-stg.duckdns.org {
+    reverse_proxy web:80
+}
+
+clara-stg-api.duckdns.org {
+    reverse_proxy api:3000
+}

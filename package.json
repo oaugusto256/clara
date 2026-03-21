@@ -15,7 +15,10 @@
 		"test": "pnpm -r run test",
 		"test:ci": "pnpm -r run test:ci",
 		"lint": "pnpm -r run lint",
-		"format": "pnpm -r run format"
+		"format": "pnpm -r run format",
+		"stg:up": "docker compose -f devops/docker/docker-compose.stg.yml --env-file .env.stg up -d",
+		"stg:down": "docker compose -f devops/docker/docker-compose.stg.yml --env-file .env.stg down",
+		"stg:logs": "docker compose -f devops/docker/docker-compose.stg.yml --env-file .env.stg logs -f"
 	},
 	"devDependencies": {
 		"@types/node": "^25.2.0",
