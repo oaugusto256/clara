@@ -1,0 +1,90 @@
+# Staging Docker Compose — images are pre-built by CI and pulled from ghcr.io.
+# Run from the repo root on the VPS:
+#   docker compose -f devops/docker/docker-compose.stg.yml --env-file .env.stg up -d
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: clara_postgres_stg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres_stg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - clara-stg
+
+  migrate:
+    image: ghcr.io/${GHCR_OWNER}/clara-migrate:stg
+    container_name: clara_migrate_stg
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - clara-stg
+    restart: on-failure
+
+  api:
+    image: ghcr.io/${GHCR_OWNER}/clara-api:stg
+    container_name: clara_api_stg
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: ${DATABASE_URL}
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      # /docs/json is the Fastify swagger JSON endpoint (verified in apps/api/src/index.ts)
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/docs/json | grep -q openapi || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - clara-stg
+
+  web:
+    image: ghcr.io/${GHCR_OWNER}/clara-web:stg
+    container_name: clara_web_stg
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - clara-stg
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: clara_caddy_stg
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"   # HTTP/3
+    volumes:
+      # Path resolves relative to this compose file's location (devops/docker/).
+      # ../../devops/caddy/Caddyfile.stg == <repo_root>/devops/caddy/Caddyfile.stg
+      - ../../devops/caddy/Caddyfile.stg:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - clara-stg
+
+volumes:
+  postgres_stg_data:
+  caddy_data:       # Stores Let's Encrypt certs — persisted across restarts
+  caddy_config:
+
+networks:
+  clara-stg:
+    driver: bridge

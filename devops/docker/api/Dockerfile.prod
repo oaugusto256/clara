@@ -2,26 +2,36 @@
 FROM node:20-alpine AS base
 WORKDIR /app
 
-# Install pnpm
-RUN npm install -g pnpm
+RUN npm install -g pnpm@8.15.4
 
-# Copy only package files for install step
-COPY pnpm-workspace.yaml pnpm-lock.yaml ./
+# Root workspace coordination files — pnpm resolves the workspace graph from here
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml tsconfig.json ./
+
+# All workspace packages the API depends on
 COPY packages ./packages
 COPY apps/api ./apps/api
 
-WORKDIR /app/apps/api
+# MUST run from workspace root — pnpm filter install fails from subdirectories
 RUN pnpm install --filter @clara/api...
 
+# Build workspace deps in dependency order.
+# They export from dist/ (not src/), so they must be compiled before the API.
+RUN pnpm --filter @clara/schemas build
+RUN pnpm --filter @clara/rules-engine build
+
 # Build the API
+WORKDIR /app/apps/api
 RUN pnpm run build
 
-# Production image
+# pnpm deploy creates a self-contained bundle:
+# copies dist/ + resolves workspace:* deps as real packages + prod-only node_modules
+WORKDIR /app
+RUN pnpm --filter @clara/api deploy --prod /deploy
+
+# Lean production image — only the self-contained bundle
 FROM node:20-alpine AS prod
 WORKDIR /app
-COPY --from=base /app/apps/api/dist ./dist
-COPY --from=base /app/apps/api/package.json ./
-COPY --from=base /app/apps/api/node_modules ./node_modules
+COPY --from=base /deploy .
 ENV NODE_ENV=production
 EXPOSE 3000
 CMD ["node", "dist/index.js"]

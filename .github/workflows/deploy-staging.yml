@@ -1,0 +1,73 @@
+# .github/workflows/deploy-staging.yml
+name: Deploy Staging
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write   # push to ghcr.io; write implies read for pull on VPS
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push API image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: devops/docker/api/Dockerfile.prod
+          push: true
+          platforms: linux/amd64
+          tags: ghcr.io/${{ github.repository_owner }}/clara-api:stg
+
+      - name: Build and push Migrate image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: devops/docker/api/Dockerfile.migrate
+          push: true
+          platforms: linux/amd64
+          tags: ghcr.io/${{ github.repository_owner }}/clara-migrate:stg
+
+      - name: Build and push Web image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: devops/docker/web/Dockerfile.stg
+          push: true
+          platforms: linux/amd64
+          build-args: VITE_API_URL=${{ secrets.STG_API_URL }}
+          tags: ghcr.io/${{ github.repository_owner }}/clara-web:stg
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHCR_USER: ${{ github.actor }}
+        with:
+          host: ${{ secrets.STG_VPS_HOST }}
+          username: ${{ secrets.STG_VPS_USER }}
+          key: ${{ secrets.STG_VPS_SSH_KEY }}
+          envs: GHCR_TOKEN,GHCR_USER
+          script: |
+            echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
+
+            cd /opt/clara
+            git pull origin main
+
+            docker compose -f devops/docker/docker-compose.stg.yml --env-file .env.stg pull
+            docker compose -f devops/docker/docker-compose.stg.yml --env-file .env.stg up -d --remove-orphans
+
+            docker image prune -f

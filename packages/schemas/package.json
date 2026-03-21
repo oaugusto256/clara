@@ -13,7 +13,7 @@
 	},
 	"scripts": {
 		"build": "tsc -p tsconfig.json && pnpm run generate-json-schemas",
-		"generate-json-schemas": "ts-node scripts/generate-json-schemas.ts",
+		"generate-json-schemas": "node scripts/generate-json-schemas.js",
 		"lint": "biome check",
 		"format": "biome format \"src/**/*.{ts,tsx,js,json,md}\"",
 		"test": "vitest",

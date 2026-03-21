@@ -1,7 +1,9 @@
 import axios from "axios";
 
-const api = axios.create({
-  baseURL: process.env.NODE_ENV === "development" ? "http://localhost:3000" : "",
-});
+// VITE_API_URL is injected at build time (Dockerfile.stg --build-arg).
+// Falls back to same-host relative URL when not set.
+const baseURL = import.meta.env.VITE_API_URL ?? (import.meta.env.DEV ? "http://localhost:3000" : "");
+
+const api = axios.create({ baseURL });
 
 export default api;
