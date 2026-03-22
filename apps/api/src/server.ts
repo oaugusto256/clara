@@ -13,7 +13,7 @@ export function createServer(): FastifyInstance {
   // Register CORS for local dev
   app.register(fastifyCors, {
     origin: true, // Allow all origins for dev/testing and Swagger UI
-    methods: ['POST', 'GET', 'OPTIONS'],
+    methods: ['POST', 'GET', 'OPTIONS', 'PATCH'],
     allowedHeaders: ['Content-Type'],
   });
 
@@ -68,6 +68,7 @@ export function createServer(): FastifyInstance {
               date: { type: 'string' },
               postedAt: { type: 'string' },
               categoryId: { type: 'string' },
+              categoryKey: { type: 'string' },
               source: { type: 'string', enum: ['csv', 'ofx', 'open_finance_mock', 'open_finance_real'] },
               metadata: { type: 'object' },
             },

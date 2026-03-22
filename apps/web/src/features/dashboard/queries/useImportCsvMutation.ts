@@ -1,6 +1,6 @@
 import api from "@/api";
 import { API_ENDPOINTS } from "@/constants/apiEndpoints";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useImportCsvMutation({
   onSuccess,
@@ -11,6 +11,8 @@ export function useImportCsvMutation({
   onError?: (err: any) => void;
   onSettled?: () => void;
 }) {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async (csvText: string) => {
       const res = await api.post(API_ENDPOINTS.IMPORT_CSV, csvText, {
@@ -19,7 +21,10 @@ export function useImportCsvMutation({
 
       return res.data;
     },
-    onSuccess,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      onSuccess?.(data);
+    },
     onError,
     onSettled,
   });
