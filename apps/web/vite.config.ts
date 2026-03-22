@@ -11,6 +11,9 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'),
     },
   },
+  optimizeDeps: {
+    include: ['@clara/schemas'],
+  },
   build: {
     outDir: 'dist',
     emptyOutDir: true,

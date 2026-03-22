@@ -12,14 +12,15 @@ import {
 } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { format } from 'date-fns';
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { FaSearch } from "react-icons/fa";
+import { CategorySelectCell } from "./CategorySelectCell";
 import { useImportCsvMutation } from "../queries/useImportCsvMutation";
+import { useUpdateTransactionCategoryMutation } from "../queries/useUpdateTransactionCategoryMutation";
 import { CATEGORY_COLORS } from '../utils/categoryColors';
 
 interface TransactionsUploadTableProps {
   transactions: Transaction[];
-  setTransactions: React.Dispatch<React.SetStateAction<Transaction[]>>;
   containerClassName?: string;
   tableScrollClassName?: string;
 }
@@ -70,67 +71,7 @@ function CategoryBadge({ categoryKey }: { categoryKey: string }) {
   );
 }
 
-const columns = [
-  columnHelper.accessor('date', {
-    header: 'Date',
-    cell: info => formatDate(info.getValue()),
-    size: 110,
-    minSize: 80,
-    maxSize: 200,
-  }),
-  columnHelper.accessor('description', {
-    header: 'Description',
-    cell: info => info.getValue(),
-    size: 220,
-    minSize: 100,
-    maxSize: 400,
-  }),
-  columnHelper.accessor(row => (
-    row.amount && typeof row.amount.amount === 'number'
-      ? row.amount.amount
-      : null
-  ), {
-    id: 'amount',
-    header: 'Amount',
-    cell: info => {
-      const original = info.row.original;
-      const value = info.getValue();
-      const currency =
-        original.amount && typeof original.amount.currency === 'string'
-          ? original.amount.currency
-          : undefined;
-      return (
-        <span className="font-mono">
-          {formatAmount(value, currency)}
-        </span>
-      );
-    },
-    size: 100,
-    minSize: 80,
-    maxSize: 200,
-  }),
-  columnHelper.accessor('categoryKey', {
-    header: 'Category',
-    cell: info => <CategoryBadge categoryKey={info.getValue() || ''} />,
-    size: 120,
-    minSize: 80,
-    maxSize: 200,
-  }),
-  columnHelper.accessor(row => row.amount && typeof row.amount.currency === 'string' ? row.amount.currency : '', {
-    id: 'currency',
-    header: 'Currency',
-    cell: info => (
-      <span className="inline-block text-xs text-base-content text-right font-semibold w-full px-4">
-        {formatCurrency(info.getValue())}
-      </span>
-    ),
-    size: 80,
-    minSize: 60,
-    maxSize: 80,
-  }),
-];
-
-const TransactionsUploadTable = ({ transactions, setTransactions }: TransactionsUploadTableProps) => {
+const TransactionsUploadTable = ({ transactions }: TransactionsUploadTableProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -138,14 +79,14 @@ const TransactionsUploadTable = ({ transactions, setTransactions }: Transactions
   const [columnSizing, setColumnSizing] = useState({});
   const [columnSizingInfo, setColumnSizingInfo] = useState({});
 
+  const updateMutation = useUpdateTransactionCategoryMutation();
+
   const importCsvMutation = useImportCsvMutation({
-    onSuccess: (data) => {
-      setTransactions(data.normalized || []);
+    onSuccess: () => {
       setError(null);
     },
     onError: (err: any) => {
       setError(err?.response?.data?.error || err.message || "Failed to import CSV");
-      setTransactions([]);
     },
     onSettled: () => {
       setLoading(false);
@@ -164,6 +105,75 @@ const TransactionsUploadTable = ({ transactions, setTransactions }: Transactions
     };
     reader.readAsText(file);
   }
+
+  const tableContainerRef = useRef<HTMLDivElement>(null);
+
+  const columns = useMemo(() => [
+    columnHelper.accessor('date', {
+      header: 'Date',
+      cell: info => formatDate(info.getValue()),
+      size: 110,
+      minSize: 80,
+      maxSize: 200,
+    }),
+    columnHelper.accessor('description', {
+      header: 'Description',
+      cell: info => info.getValue(),
+      size: 220,
+      minSize: 100,
+      maxSize: 400,
+    }),
+    columnHelper.accessor(row => (
+      row.amount && typeof row.amount.amount === 'number'
+        ? row.amount.amount
+        : null
+    ), {
+      id: 'amount',
+      header: 'Amount',
+      cell: info => {
+        const original = info.row.original;
+        const value = info.getValue();
+        const currency =
+          original.amount && typeof original.amount.currency === 'string'
+            ? original.amount.currency
+            : undefined;
+        return (
+          <span className="font-mono">
+            {formatAmount(value, currency)}
+          </span>
+        );
+      },
+      size: 100,
+      minSize: 80,
+      maxSize: 200,
+    }),
+    columnHelper.accessor('categoryKey', {
+      header: 'Category',
+      cell: info => (
+        <CategorySelectCell
+          transactionId={info.row.original.id}
+          currentCategoryKey={info.getValue()}
+          mutation={updateMutation}
+          tableContainerRef={tableContainerRef}
+        />
+      ),
+      size: 120,
+      minSize: 80,
+      maxSize: 200,
+    }),
+    columnHelper.accessor(row => row.amount && typeof row.amount.currency === 'string' ? row.amount.currency : '', {
+      id: 'currency',
+      header: 'Currency',
+      cell: info => (
+        <span className="inline-block text-xs text-base-content text-right font-semibold w-full px-4">
+          {formatCurrency(info.getValue())}
+        </span>
+      ),
+      size: 80,
+      minSize: 60,
+      maxSize: 80,
+    }),
+  ], [updateMutation, tableContainerRef]);
 
   // TanStack Table setup
   const table = useReactTable({
@@ -188,7 +198,6 @@ const TransactionsUploadTable = ({ transactions, setTransactions }: Transactions
   });
 
   // Virtualizer setup
-  const tableContainerRef = useRef<HTMLDivElement>(null);
   const rowVirtualizer = useVirtualizer({
     count: table.getRowModel().rows.length,
     getScrollElement: () => tableContainerRef.current,
@@ -316,7 +325,7 @@ const TransactionsUploadTable = ({ transactions, setTransactions }: Transactions
                         return (
                           <tr
                             key={row.id}
-                            className="border-base-100 last:border-b hover:bg-primary/10 transition-colors w-full text-base font-medium"
+                            className="group border-base-100 last:border-b hover:bg-primary/10 transition-colors w-full text-base font-medium"
                             style={{ height: `${virtualRow.size}px` }}
                           >
                             {row.getVisibleCells().map(cell => {
