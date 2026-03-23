@@ -1,10 +1,9 @@
-import type { Transaction } from "@clara/schemas";
 import { DEFAULT_CATEGORY_KEYS } from "@clara/schemas";
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
-import { FaPencilAlt, FaExclamationCircle } from "react-icons/fa";
-import { CATEGORY_COLORS } from "../utils/categoryColors";
+import { FaExclamationCircle, FaPencilAlt } from "react-icons/fa";
 import type { useUpdateTransactionCategoryMutation } from "../queries/useUpdateTransactionCategoryMutation";
+import { CATEGORY_COLORS } from "../utils/categoryColors";
 
 type UpdateMutation = ReturnType<typeof useUpdateTransactionCategoryMutation>;
 
@@ -90,44 +89,41 @@ export function CategorySelectCell({
 
   const popover = isOpen && popoverPos
     ? ReactDOM.createPortal(
-        <div
-          className="fixed z-[9999] bg-base-100 border border-base-300 rounded shadow-lg py-1 min-w-[160px]"
-          style={{ top: popoverPos.top, left: popoverPos.left }}
-          onMouseDown={(e) => e.stopPropagation()}
-        >
-          {DEFAULT_CATEGORY_KEYS.map((key) => {
-            const color = CATEGORY_COLORS[key] || CATEGORY_COLORS.default;
-            const isSelected = key === currentCategoryKey;
-            return (
-              <button
-                key={key}
-                type="button"
-                className={[
-                  "flex items-center gap-2 w-full px-3 py-1.5 text-sm text-left hover:bg-base-200 transition-colors",
-                  isSelected ? "bg-base-200 font-semibold" : "",
-                ].join(" ")}
-                onClick={() => handleSelect(key)}
-                onKeyDown={(e) => e.key === "Enter" && handleSelect(key)}
-              >
-                <span
-                  className="inline-block w-2.5 h-2.5 rounded-full flex-shrink-0"
-                  style={{ backgroundColor: color }}
-                />
-                <span className="capitalize">{key}</span>
-              </button>
-            );
-          })}
-        </div>,
-        document.body
-      )
+      <div
+        className="fixed z-[9999] bg-base-100 border border-base-300 rounded shadow-lg py-1 min-w-[160px]"
+        style={{ top: popoverPos.top, left: popoverPos.left }}
+        onMouseDown={(e) => e.stopPropagation()}
+      >
+        {DEFAULT_CATEGORY_KEYS.map((key) => {
+          const color = CATEGORY_COLORS[key] || CATEGORY_COLORS.default;
+          const isSelected = key === currentCategoryKey;
+          return (
+            <button
+              key={key}
+              type="button"
+              className={[
+                "flex items-center gap-2 w-full px-3 py-1.5 text-sm text-left hover:bg-base-200 transition-colors",
+                isSelected ? "bg-base-200 font-semibold" : "",
+              ].join(" ")}
+              onClick={() => handleSelect(key)}
+              onKeyDown={(e) => e.key === "Enter" && handleSelect(key)}
+            >
+              <span
+                className="inline-block w-2.5 h-2.5 rounded-full flex-shrink-0"
+                style={{ backgroundColor: color }}
+              />
+              <span className="capitalize">{key}</span>
+            </button>
+          );
+        })}
+      </div>,
+      document.body
+    )
     : null;
 
   return (
     <div ref={cellRef} className="inline-flex items-center gap-1">
-      {/* Pencil icon — visible on row hover via CSS group-hover */}
-      <span className="opacity-0 group-hover:opacity-100 transition-opacity text-base-content/50 cursor-pointer">
-        <FaPencilAlt className="w-2.5 h-2.5" />
-      </span>
+
 
       <button
         type="button"
@@ -143,6 +139,11 @@ export function CategorySelectCell({
           muted={isLoading}
         />
       </button>
+
+      {/* Pencil icon — visible on row hover via CSS group-hover */}
+      <span className="opacity-0 group-hover:opacity-100 transition-opacity text-base-content/50 cursor-pointer">
+        <FaPencilAlt className="w-2.5 h-2.5" />
+      </span>
 
       {isError && (
         <span className="text-error ml-1" title="Failed to update category">
