@@ -11,18 +11,17 @@ import {
   ResponsiveContainer,
   Tooltip
 } from "recharts";
-import { CATEGORY_COLOR_ARRAY } from '../utils/categoryColors';
+import { DEFAULT_CATEGORY_COLOR } from '../utils/categoryColors';
 
 export interface CategoryTotal {
   categoryKey: string;
   total: number;
+  color: string | null;
 }
 
 interface CategoryPieChartProps {
   data: CategoryTotal[];
 }
-const COLORS = CATEGORY_COLOR_ARRAY;
-
 const CategoryPieChart: React.FC<CategoryPieChartProps> = ({ data }) => {
   const total = data.reduce((sum, d) => sum + d.total, 0);
   const { colorMode } = useTheme();
@@ -39,7 +38,7 @@ const CategoryPieChart: React.FC<CategoryPieChartProps> = ({ data }) => {
     const radius = outerRadius + 28; // was 12, now 28 for more distance
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
-    const color = COLORS[index % COLORS.length];
+    const color = data[index]?.color ?? DEFAULT_CATEGORY_COLOR;
 
     // Capitalize first letter of name safely
     let labelName = name;
@@ -132,7 +131,7 @@ const CategoryPieChart: React.FC<CategoryPieChartProps> = ({ data }) => {
                   labelLine={renderLabelLine}
                 >
                   {data.map((entry, idx) => (
-                    <Cell key={`cell-${entry.categoryKey}`} fill={COLORS[idx % COLORS.length]} />
+                    <Cell key={`cell-${entry.categoryKey}`} fill={entry.color ?? DEFAULT_CATEGORY_COLOR} />
                   ))}
                   <Label
                     position="center"

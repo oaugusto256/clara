@@ -15,6 +15,8 @@ export const CATEGORY_COLORS: Record<string, string> = {
   default: '#a3a3a3',      // gray
 };
 
+export const DEFAULT_CATEGORY_COLOR = CATEGORY_COLORS.default;
+
 // For pie chart — ordered color cycling (fallback for when DB colors are unavailable)
 export const CATEGORY_COLOR_ARRAY = [
   CATEGORY_COLORS.housing,
