@@ -3,7 +3,7 @@
 # Two separate DuckDNS subdomains are required (DuckDNS only supports one level).
 # Register both at duckdns.org pointing to your VPS IP:
 #   clara-stg       → for the web frontend
-#   clara-stg-api   → for the API
+#   clara-api-stg   → for the API
 #
 # When you buy a real domain, replace these two hostnames and redeploy.
 
@@ -14,7 +14,7 @@ clara-stg.duckdns.org {
     reverse_proxy web:80
 }
 
-clara-stg-api.duckdns.org {
+clara-api-stg.duckdns.org {
     tls {
         ca https://acme-v02.api.letsencrypt.org/directory
     }
