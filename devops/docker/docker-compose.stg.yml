@@ -39,6 +39,7 @@ services:
     environment:
       NODE_ENV: production
       DATABASE_URL: ${DATABASE_URL}
+      CATEGORIES_ADMIN_KEY: ${CATEGORIES_ADMIN_KEY}
     depends_on:
       db:
         condition: service_healthy
