@@ -1,6 +1,7 @@
 import { Transaction } from '@clara/schemas';
 import { db } from './client';
 import { transactions } from './transactions.schema';
+import { eq } from 'drizzle-orm';
 
 export async function fetchTransactions(): Promise<Transaction[]> {
   const rows = await db.select().from(transactions);
@@ -44,4 +45,33 @@ export async function saveTransactions(txList: Transaction[]): Promise<void> {
       }))
     )
     .onConflictDoNothing();
+}
+
+export async function updateTransactionCategoryKey(
+  id: string,
+  categoryKey: string
+): Promise<Transaction | null> {
+  const rows = await db
+    .update(transactions)
+    .set({ categoryKey })
+    .where(eq(transactions.id, id))
+    .returning();
+
+  if (!rows.length) return null;
+
+  const row = rows[0] as any;
+  return {
+    id: row.id,
+    userId: row.userId,
+    accountId: row.accountId,
+    description: row.description,
+    amount: { amount: row.amount, currency: row.currency },
+    direction: row.direction,
+    date: row.date,
+    postedAt: row.postedAt ?? undefined,
+    categoryId: row.categoryId ?? undefined,
+    categoryKey: row.categoryKey ?? undefined,
+    source: row.source,
+    metadata: row.metadata ?? undefined,
+  };
 }

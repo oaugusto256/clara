@@ -89,6 +89,7 @@ type Transaction = {
   postedAt?: string // ISO date
 
   categoryId?: string
+  categoryKey?: "housing" | "food" | "transport" | "health" | "education" | "leisure" | "subscriptions" | "savings" | "other"
   source: "csv" | "ofx" | "open_finance_mock" | "open_finance_real"
 
   metadata?: Record<string, unknown>

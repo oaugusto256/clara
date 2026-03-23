@@ -1,4 +1,4 @@
 export const API_ENDPOINTS = {
   IMPORT_CSV: "/import/csv",
-  // Add more endpoints as needed
+  TRANSACTIONS_UPDATE_CATEGORY: (id: string) => `/transactions/${id}/category`,
 };
