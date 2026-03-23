@@ -3,6 +3,7 @@ import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import type { FastifyInstance } from 'fastify';
 import Fastify from 'fastify';
+import { categoriesRoute } from './http/routes/categories';
 import { importCsvRoute } from './http/routes/import';
 import { keywordCategoryRoutes } from './http/routes/keywordCategory';
 import { transactionsRoute } from './http/routes/transactions';
@@ -13,8 +14,8 @@ export function createServer(): FastifyInstance {
   // Register CORS for local dev
   app.register(fastifyCors, {
     origin: true, // Allow all origins for dev/testing and Swagger UI
-    methods: ['POST', 'GET', 'OPTIONS', 'PATCH'],
-    allowedHeaders: ['Content-Type'],
+    methods: ['POST', 'GET', 'OPTIONS', 'PATCH', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'X-Admin-Key'],
   });
 
   // Register content type parser globally for CSV/text
@@ -33,8 +34,16 @@ export function createServer(): FastifyInstance {
       },
       tags: [
         { name: 'import', description: 'Import endpoints' },
+        { name: 'categories', description: 'Category management endpoints' },
       ],
       components: {
+        securitySchemes: {
+          adminKey: {
+            type: 'apiKey',
+            in: 'header',
+            name: 'X-Admin-Key',
+          },
+        },
         schemas: {
           NormalizedTransactionInput: {
             type: 'object',
@@ -84,6 +93,17 @@ export function createServer(): FastifyInstance {
             required: ['line', 'reason'],
             additionalProperties: false,
           },
+          Category: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              key: { type: 'string' },
+              name: { type: 'string' },
+              color: { type: 'string' },
+            },
+            required: ['id', 'key', 'name'],
+            additionalProperties: true,
+          },
         },
       },
     },
@@ -92,6 +112,7 @@ export function createServer(): FastifyInstance {
   app.register(importCsvRoute);
   app.register(transactionsRoute);
   app.register(keywordCategoryRoutes);
+  app.register(categoriesRoute);
 
   // Register Swagger UI
   app.register(fastifySwaggerUi, {

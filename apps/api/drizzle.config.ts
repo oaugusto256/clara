@@ -5,7 +5,8 @@ const DATABASE_URL = process.env.DATABASE_URL ?? "postgresql://root:root@localho
 export default defineConfig({
   schema: [
     "./src/infra/db/keywordCategoryMap.schema.ts",
-    "./src/infra/db/transactions.schema.ts"
+    "./src/infra/db/transactions.schema.ts",
+    "./src/infra/db/categories.schema.ts",
   ],
   out: "./src/infra/db/migrations",
   dialect: "postgresql",

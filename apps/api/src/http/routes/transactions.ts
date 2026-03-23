@@ -1,7 +1,7 @@
 import type { FastifyPluginAsync } from 'fastify';
 import TransactionJsonSchema from '../../generated-schemas/Transaction.schema.json';
+import { getCategoryByKey } from '../../app/categories/categoriesService';
 import { fetchTransactions, updateTransactionCategory } from '../../app/transactions/transactionsService';
-import { DEFAULT_CATEGORY_KEYS } from '@clara/schemas';
 
 export const transactionsRoute: FastifyPluginAsync = async (app) => {
   app.get(
@@ -11,10 +11,7 @@ export const transactionsRoute: FastifyPluginAsync = async (app) => {
         summary: 'Get all transactions',
         tags: ['transactions'],
         response: {
-          200: {
-            type: 'array',
-            items: TransactionJsonSchema,
-          },
+          200: { type: 'array', items: TransactionJsonSchema },
         },
       },
     },
@@ -32,31 +29,33 @@ export const transactionsRoute: FastifyPluginAsync = async (app) => {
         tags: ['transactions'],
         params: {
           type: 'object',
-          properties: {
-            id: { type: 'string', maxLength: 64 },
-          },
+          properties: { id: { type: 'string', maxLength: 64 } },
           required: ['id'],
         },
         body: {
           type: 'object',
           properties: {
-            categoryKey: { type: 'string', enum: [...DEFAULT_CATEGORY_KEYS] },
+            categoryKey: { type: 'string', minLength: 1, maxLength: 64 },
           },
           required: ['categoryKey'],
           additionalProperties: false,
         },
         response: {
           200: TransactionJsonSchema,
-          404: {
-            type: 'object',
-            properties: { message: { type: 'string' } },
-          },
+          400: { type: 'object', properties: { message: { type: 'string' } } },
+          404: { type: 'object', properties: { message: { type: 'string' } } },
         },
       },
     },
     async (request, reply) => {
       const { id } = request.params as { id: string };
       const { categoryKey } = request.body as { categoryKey: string };
+
+      const category = await getCategoryByKey(categoryKey);
+      if (!category) {
+        return reply.status(400).send({ message: `Unknown category key: ${categoryKey}` });
+      }
+
       const updated = await updateTransactionCategory(id, categoryKey);
       if (!updated) {
         return reply.status(404).send({ message: 'Transaction not found' });
