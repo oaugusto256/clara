@@ -1,9 +1,8 @@
-import { DEFAULT_CATEGORY_KEYS } from "@clara/schemas";
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import { FaExclamationCircle, FaPencilAlt } from "react-icons/fa";
 import type { useUpdateTransactionCategoryMutation } from "../queries/useUpdateTransactionCategoryMutation";
-import { CATEGORY_COLORS } from "../utils/categoryColors";
+import { CATEGORY_COLORS, CATEGORY_KEYS } from "../utils/categoryColors";
 
 type UpdateMutation = ReturnType<typeof useUpdateTransactionCategoryMutation>;
 
@@ -94,7 +93,7 @@ export function CategorySelectCell({
         style={{ top: popoverPos.top, left: popoverPos.left }}
         onMouseDown={(e) => e.stopPropagation()}
       >
-        {DEFAULT_CATEGORY_KEYS.map((key) => {
+        {CATEGORY_KEYS.map((key) => {
           const color = CATEGORY_COLORS[key] || CATEGORY_COLORS.default;
           const isSelected = key === currentCategoryKey;
           return (

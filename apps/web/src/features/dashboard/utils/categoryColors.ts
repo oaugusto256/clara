@@ -15,7 +15,12 @@ export const CATEGORY_COLORS: Record<string, string> = {
   default: '#a3a3a3',      // gray
 };
 
-// For pie chart, provide an ordered array for color cycling (matches DEFAULT_CATEGORY_KEYS order)
+export const CATEGORY_KEYS = [
+  'housing', 'food', 'transport', 'health', 'education',
+  'leisure', 'subscriptions', 'savings', 'other',
+] as const;
+
+// For pie chart, provide an ordered array for color cycling (matches CATEGORY_KEYS order)
 export const CATEGORY_COLOR_ARRAY = [
   CATEGORY_COLORS.housing,
   CATEGORY_COLORS.food,
